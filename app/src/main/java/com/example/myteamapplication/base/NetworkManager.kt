@@ -1,5 +1,7 @@
 package com.example.myteamapplication.base
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -24,5 +26,17 @@ object NetworkManager {
             .build()
 
     }
+
+    fun getRestApi(): RestApi {
+
+        return retrofitService().create(RestApi::class.java)
+    }
+
+    private fun createGson(): Gson {
+
+        return GsonBuilder()
+            .create()
+    }
+
 
 }

@@ -1,14 +1,14 @@
 package com.example.myteamapplication.adapters
 
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
+import com.example.myteamapplication.allteams.AllTeamModel
 
-class AllTeamRecyclerAdapter(private val allTeams: List<String>) :
+class AllTeamRecyclerAdapter(private val allTeams: List<AllTeamModel>) :
     RecyclerView.Adapter<AllTeamRecyclerAdapter.MyViewHolder>() {
 
 
@@ -21,13 +21,15 @@ class AllTeamRecyclerAdapter(private val allTeams: List<String>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.numberAllTeam?.text = allTeams[position]
+        holder.numberAllTeam?.text = allTeams[position].toString()
+        holder.cityAllTeam?.text = "all team"
+        holder.activityAllTeam?.text = "activity"
 
     }
 
     override fun getItemCount(): Int {
 
-        return allTeams.size
+        return 1
     }
 
 

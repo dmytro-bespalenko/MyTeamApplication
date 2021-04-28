@@ -1,20 +1,21 @@
 package com.example.myteamapplication.allteams
+
 import com.google.gson.annotations.SerializedName
 
 
 data class AllTeamModel(
     @SerializedName("metric")
-    var metric: String,
+    var metric: String? = null,
     @SerializedName("period")
-    var period: String,
+    var period: String? = null,
     @SerializedName("programId")
-    var programId: String,
+    var programId: String? = null,
     @SerializedName("programName")
-    var programName: String,
+    var programName: String? = null,
     @SerializedName("results")
-    var results: List<Result>,
+    var results: List<Result>? = null,
     @SerializedName("userTeamResult")
-    var userTeamResult: UserTeamResult
+    var userTeamResult: UserTeamResult? = null
 )
 
 data class Result(

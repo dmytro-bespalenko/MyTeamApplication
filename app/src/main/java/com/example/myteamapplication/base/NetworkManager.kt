@@ -10,18 +10,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 object NetworkManager {
 
 
-    private val BASE_URL = "https://mocki.io/v1/"
+    private const val BASE_URL = "https://mocki.io"
 
     private val okHttpClient = OkHttpClient()
         .newBuilder()
         .build()
 
 
-    fun retrofitService(): Retrofit {
+    private fun retrofitService(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(createGSon()))
             .client(okHttpClient)
             .build()
 
@@ -32,11 +32,8 @@ object NetworkManager {
         return retrofitService().create(RestApi::class.java)
     }
 
-    private fun createGson(): Gson {
-
+    private fun createGSon(): Gson {
         return GsonBuilder()
             .create()
     }
-
-
 }

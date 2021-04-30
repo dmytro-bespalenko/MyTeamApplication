@@ -2,9 +2,8 @@ package com.example.myteamapplication.repositories
 
 import com.example.myteamapplication.base.RestApi
 
-class AllTeamRepository (var api: RestApi) {
+class MyCompaniesRepository(var api: RestApi) {
 
-
-    fun getAllTeamApi() = api.getAllTeams()
+    fun getMyCompaniesApi() = api.getMyCompany()
 
 }

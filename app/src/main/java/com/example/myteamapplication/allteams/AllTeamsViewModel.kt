@@ -6,35 +6,39 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myteamapplication.base.RestApi
 import com.example.myteamapplication.base.TeamApplication
+import com.example.myteamapplication.repositories.AllTeamRepository
 import com.example.myteamapplication.viewmodel.BasicViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 
-class AllTeamsViewModel(instance: TeamApplication) : BasicViewModel() {
+class AllTeamsViewModel(instance: TeamApplication) : BasicViewModel(instance) {
 
     var api: RestApi = instance.api
 
-    private val allTeams: MutableLiveData<AllTeamModel> =
-        MutableLiveData<AllTeamModel>()
+    var allTeamRepository: AllTeamRepository = AllTeamRepository(api)
 
-    fun getTeams(): LiveData<AllTeamModel> {
+    private val allTeams: MutableLiveData<List<Result>> =
+        MutableLiveData<List<Result>>()
+
+
+    fun getTeams(): LiveData<List<Result>> {
         return allTeams
     }
 
 
     fun updateAllTeams() {
-
-        api.getAllTeams()
+        allTeamRepository.getAllTeamApi()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { all -> allTeams.postValue(all) },
+                { all -> allTeams.postValue(all.results) },
                 { t -> Log.d("TAG", "updateAllTeams: +$t") })
 
     }
 
 
 }
+
 

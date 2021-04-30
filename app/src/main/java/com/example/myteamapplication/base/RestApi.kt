@@ -1,6 +1,7 @@
 package com.example.myteamapplication.base
 
 import com.example.myteamapplication.allteams.AllTeamModel
+import com.example.myteamapplication.mycompanies.MyCompaniesModel
 import com.example.myteamapplication.myteam.MyTeamModel
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -9,7 +10,7 @@ interface RestApi {
 
 
     @GET("/v1/5472d014-4ee8-4a52-a571-6d159beb1e0c")
-    fun getMyCompany(): Single<com.example.myteamapplication.mycompanies.Result>
+    fun getMyCompany(): Single<MyCompaniesModel>
 
     @GET("/v1/21f1a59c-7db1-4e09-9846-b4e3fbcbd513")
     fun getAllTeams(): Single<AllTeamModel>

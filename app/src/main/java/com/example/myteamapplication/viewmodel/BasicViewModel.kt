@@ -1,8 +1,9 @@
 package com.example.myteamapplication.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-abstract class BasicViewModel : ViewModel() {
+abstract class BasicViewModel(app: Application) : AndroidViewModel(app) {
 
 
 

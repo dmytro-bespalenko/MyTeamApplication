@@ -1,33 +1,35 @@
-package com.example.myteamapplication.allteams
+package com.example.myteamapplication.mycompanies
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.adapters.AllTeamRecyclerAdapter
+import com.example.myteamapplication.adapters.MyCompaniesRecyclerAdapter
 import com.example.myteamapplication.base.BasicFragment
 import com.example.myteamapplication.base.TeamApplication
 
-class AllTeamsFragment : BasicFragment() {
+class MyCompaniesFragment : BasicFragment() {
 
-    var allTeamsList: MutableList<Result> = mutableListOf()
+    var myCompaniesList: MutableList<Result> = mutableListOf()
+    var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList)
 
-    private var allTeamViewModel: AllTeamsViewModel = AllTeamsViewModel(TeamApplication.instance)
-    var recyclerAdapter = AllTeamRecyclerAdapter(allTeamsList)
+    private var myCompaniesViewModel: MyCompaniesViewModel =
+        MyCompaniesViewModel(TeamApplication.instance)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        allTeamViewModel = ViewModelProvider(
-            requireActivity(),
-            AllTeamsFactory()
+        myCompaniesViewModel = ViewModelProvider(
+            requireActivity(), MyCompaniesFactory()
         )
-            .get(AllTeamsViewModel::class.java)
+            .get(MyCompaniesViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -44,19 +46,21 @@ class AllTeamsFragment : BasicFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
 
-        allTeamViewModel.getTeams().observe(requireActivity(), { a ->
-            allTeamsList.clear()
-            allTeamsList.addAll(a)
-            recyclerAdapter.notifyDataSetChanged()
-        })
+        myCompaniesViewModel
+            .getCompanies()
+            .observe(this,
+                { c ->
+                    myCompaniesList.clear()
+                    myCompaniesList.addAll(c)
+                    recyclerAdapter.notifyDataSetChanged()
 
+                })
 
     }
 
     override fun onResume() {
         super.onResume()
-        allTeamViewModel.updateAllTeams()
         Log.d("TAG", "onResume: $this")
+        myCompaniesViewModel.updateCompanies()
     }
 }
-

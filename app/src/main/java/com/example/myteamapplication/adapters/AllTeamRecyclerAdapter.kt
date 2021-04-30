@@ -1,14 +1,15 @@
 package com.example.myteamapplication.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.allteams.AllTeamModel
+import com.example.myteamapplication.allteams.Result
 
-class AllTeamRecyclerAdapter(private val allTeams: List<AllTeamModel>) :
+class AllTeamRecyclerAdapter(private val allTeams: List<Result>) :
 
     RecyclerView.Adapter<AllTeamRecyclerAdapter.MyViewHolder>() {
 
@@ -21,12 +22,19 @@ class AllTeamRecyclerAdapter(private val allTeams: List<AllTeamModel>) :
         return MyViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.numberAllTeam?.text = allTeams[position].results?.get(position)?.rank.toString()
-        holder.cityAllTeam?.text = allTeams[position].results?.get(position)?.displayName
-        holder.activityAllTeam?.text = allTeams[position].results?.get(position)?.averageDouble.toString()
+        holder.numberAllTeam?.text = allTeams[position].rank.toString()
+        holder.cityAllTeam?.text = allTeams[position].displayName
 
+        if (allTeams[position].average != 0) {
+            holder.activityAllTeam?.text =
+                allTeams[position].average.toString()
+        } else {
+            holder.activityAllTeam?.text = "no activity"
+
+        }
     }
 
     override fun getItemCount(): Int {

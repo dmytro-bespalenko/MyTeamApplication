@@ -42,6 +42,8 @@ class AllTeamsViewModel(instance: TeamApplication) : BasicViewModel(instance) {
     }
 
 
+
+
 }
 
 

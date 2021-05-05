@@ -1,4 +1,4 @@
-package com.example.myteamapplication.base
+package com.example.myteamapplication.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myteamapplication.R
+import com.example.myteamapplication.ui.main.adapters.ViewPagerFragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

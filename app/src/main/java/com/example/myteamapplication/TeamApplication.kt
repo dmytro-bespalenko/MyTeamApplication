@@ -1,6 +1,8 @@
-package com.example.myteamapplication.base
+package com.example.myteamapplication
 
 import android.app.Application
+import com.example.myteamapplication.network.NetworkManager
+import com.example.myteamapplication.network.RestApi
 
 class TeamApplication : Application() {
 

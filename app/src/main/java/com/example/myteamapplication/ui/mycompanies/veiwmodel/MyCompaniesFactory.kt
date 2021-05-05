@@ -1,9 +1,8 @@
-package com.example.myteamapplication.mycompanies
+package com.example.myteamapplication.ui.mycompanies.veiwmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myteamapplication.allteams.AllTeamsViewModel
-import com.example.myteamapplication.base.TeamApplication
+import com.example.myteamapplication.TeamApplication
 
 class MyCompaniesFactory() : ViewModelProvider.Factory {
 

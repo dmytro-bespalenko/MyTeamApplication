@@ -1,4 +1,5 @@
-package com.example.myteamapplication.mycompanies
+package com.example.myteamapplication.network.models.mycompanies
+
 import com.google.gson.annotations.SerializedName
 
 

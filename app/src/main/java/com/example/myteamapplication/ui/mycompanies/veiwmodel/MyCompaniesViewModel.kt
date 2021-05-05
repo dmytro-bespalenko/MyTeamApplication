@@ -1,13 +1,13 @@
-package com.example.myteamapplication.mycompanies
+package com.example.myteamapplication.ui.mycompanies.veiwmodel
 
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myteamapplication.base.RestApi
-import com.example.myteamapplication.base.TeamApplication
+import com.example.myteamapplication.network.RestApi
+import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.repositories.MyCompaniesRepository
-import com.example.myteamapplication.viewmodel.BasicViewModel
+import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -18,9 +18,9 @@ class MyCompaniesViewModel(instance: TeamApplication) : BasicViewModel(instance)
 
     private val myCompaniesRepository: MyCompaniesRepository = MyCompaniesRepository(api)
 
-    private val myCompanies: MutableLiveData<List<Result>> = MutableLiveData<List<Result>>()
+    private val myCompanies: MutableLiveData<List<MyCompaniesDisplayModel>> = MutableLiveData<List<MyCompaniesDisplayModel>>()
 
-    fun getCompanies(): LiveData<List<Result>> {
+    fun getCompanies(): LiveData<List<MyCompaniesDisplayModel>> {
 
         return myCompanies
     }
@@ -32,7 +32,9 @@ class MyCompaniesViewModel(instance: TeamApplication) : BasicViewModel(instance)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { all -> myCompanies.postValue(all.results) },
+                { all -> myCompanies.postValue(all.results.map {
+                    TODO("Map Network model to Display model")
+                }) },
                 { t -> Log.d("TAG", "updateCompanies: $t") }
             )
     }

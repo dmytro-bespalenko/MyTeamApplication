@@ -1,9 +1,9 @@
-package com.example.myteamapplication.myteam
+package com.example.myteamapplication.ui.myteam
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.example.myteamapplication.base.BasicFragment
+import com.example.myteamapplication.ui.main.fragment.BasicFragment
 
 
 class MyTeamFragment : BasicFragment() {

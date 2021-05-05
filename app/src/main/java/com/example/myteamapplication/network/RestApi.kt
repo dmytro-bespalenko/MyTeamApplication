@@ -1,8 +1,8 @@
-package com.example.myteamapplication.base
+package com.example.myteamapplication.network
 
-import com.example.myteamapplication.allteams.AllTeamModel
-import com.example.myteamapplication.mycompanies.MyCompaniesModel
-import com.example.myteamapplication.myteam.MyTeamModel
+import com.example.myteamapplication.network.models.AllTeamModel
+import com.example.myteamapplication.network.models.mycompanies.MyCompaniesModel
+import com.example.myteamapplication.network.myteam.MyTeamModel
 import io.reactivex.Single
 import retrofit2.http.GET
 

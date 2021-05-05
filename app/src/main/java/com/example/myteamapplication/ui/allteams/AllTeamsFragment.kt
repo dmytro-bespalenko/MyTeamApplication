@@ -1,4 +1,4 @@
-package com.example.myteamapplication.allteams
+package com.example.myteamapplication.ui.allteams
 
 import android.os.Bundle
 import android.util.Log
@@ -9,13 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.adapters.AllTeamRecyclerAdapter
-import com.example.myteamapplication.base.BasicFragment
-import com.example.myteamapplication.base.TeamApplication
+import com.example.myteamapplication.ui.allteams.adapters.AllTeamRecyclerAdapter
+import com.example.myteamapplication.ui.main.fragment.BasicFragment
+import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsDisplayModel
+import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsFactory
+import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsViewModel
 
 class AllTeamsFragment : BasicFragment() {
 
-    var allTeamsList: MutableList<Result> = mutableListOf()
+    var allTeamsList: MutableList<AllTeamsDisplayModel> = mutableListOf()
 
     private var allTeamViewModel: AllTeamsViewModel = AllTeamsViewModel(TeamApplication.instance)
     var recyclerAdapter = AllTeamRecyclerAdapter(allTeamsList)

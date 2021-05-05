@@ -1,16 +1,14 @@
-package com.example.myteamapplication.adapters
+package com.example.myteamapplication.ui.mycompanies.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.mycompanies.MyCompaniesModel
-import com.example.myteamapplication.mycompanies.Result
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 
-class MyCompaniesRecyclerAdapter(private val myCompaniesList: MutableList<Result>) :
+class MyCompaniesRecyclerAdapter(private val myCompaniesList: MutableList<MyCompaniesDisplayModel>) :
     RecyclerView.Adapter<MyCompaniesRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

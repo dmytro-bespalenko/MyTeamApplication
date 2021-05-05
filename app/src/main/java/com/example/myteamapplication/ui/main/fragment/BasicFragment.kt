@@ -1,4 +1,4 @@
-package com.example.myteamapplication.base
+package com.example.myteamapplication.ui.main.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

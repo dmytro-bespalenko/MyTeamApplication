@@ -1,4 +1,4 @@
-package com.example.myteamapplication.base
+package com.example.myteamapplication.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -21,7 +21,7 @@ object NetworkManager {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(createGSon()))
+            .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
@@ -30,10 +30,5 @@ object NetworkManager {
     fun getRestApi(): RestApi {
 
         return retrofitService().create(RestApi::class.java)
-    }
-
-    private fun createGSon(): Gson {
-        return GsonBuilder()
-            .create()
     }
 }

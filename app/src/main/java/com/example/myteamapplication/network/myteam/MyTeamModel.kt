@@ -1,4 +1,4 @@
-package com.example.myteamapplication.myteam
+package com.example.myteamapplication.network.myteam
 import com.google.gson.annotations.SerializedName
 
 

@@ -1,6 +1,6 @@
 package com.example.myteamapplication.repositories
 
-import com.example.myteamapplication.base.RestApi
+import com.example.myteamapplication.network.RestApi
 
 class MyCompaniesRepository(var api: RestApi) {
 

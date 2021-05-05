@@ -1,4 +1,4 @@
-package com.example.myteamapplication.adapters
+package com.example.myteamapplication.ui.allteams.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.allteams.Result
+import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsDisplayModel
 
-class AllTeamRecyclerAdapter(private val allTeams: List<Result>) :
+class AllTeamRecyclerAdapter(private val allTeams: List<AllTeamsDisplayModel>) :
 
     RecyclerView.Adapter<AllTeamRecyclerAdapter.MyViewHolder>() {
 

@@ -1,22 +1,24 @@
-package com.example.myteamapplication.mycompanies
+package com.example.myteamapplication.ui.mycompanies
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.adapters.MyCompaniesRecyclerAdapter
-import com.example.myteamapplication.base.BasicFragment
-import com.example.myteamapplication.base.TeamApplication
+import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
+import com.example.myteamapplication.ui.main.fragment.BasicFragment
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
+import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesFactory
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
 class MyCompaniesFragment : BasicFragment() {
 
-    var myCompaniesList: MutableList<Result> = mutableListOf()
+    var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
     var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList)
 
     private var myCompaniesViewModel: MyCompaniesViewModel =

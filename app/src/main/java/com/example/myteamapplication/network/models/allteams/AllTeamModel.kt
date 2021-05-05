@@ -1,5 +1,6 @@
-package com.example.myteamapplication.allteams
+package com.example.myteamapplication.network.models
 
+import com.example.myteamapplication.network.models.mycompanies.Result
 import com.google.gson.annotations.SerializedName
 
 

@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/chooseTitle"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Choose time frame for you leaderboard"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+
+            <com.example.myteamapplication.ui.customview.CustomSelectFilterView
+                android:id="@+id/left_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:category_image="@drawable/calendarfirst"
+                app:category_name="TOODAY">
+
+            </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
+
+            <com.example.myteamapplication.ui.customview.CustomSelectFilterView
+                android:id="@+id/middle_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:category_image="@drawable/calendarseven"
+                app:category_name="7 DAYS">
+
+            </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
+
+            <com.example.myteamapplication.ui.customview.CustomSelectFilterView
+                android:id="@+id/right_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:category_image="@drawable/calendarpage"
+                app:category_name="MONTH">
+
+            </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
+
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_save"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/save"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cancel"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

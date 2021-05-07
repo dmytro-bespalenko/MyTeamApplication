@@ -6,43 +6,107 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
+import com.example.myteamapplication.ui.customview.CustomFilterView
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 
-class MyCompaniesRecyclerAdapter(private val myCompaniesList: MutableList<MyCompaniesDisplayModel>) :
-    RecyclerView.Adapter<MyCompaniesRecyclerAdapter.ViewHolder>() {
+class MyCompaniesRecyclerAdapter(
+    private val myCompaniesList: MutableList<MyCompaniesDisplayModel>,
+    private val listener: OnItemClickListener
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    private var TYPE_ITEM_ZERO = 0
+    private var TYPE_ITEM_OTHER = 1
 
-        return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.my_companies_card, parent, false)
-        )
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
+
+        return when (viewType) {
+            TYPE_ITEM_ZERO -> ViewHolderZeroPosition(
+                LayoutInflater.from(parent.context).inflate(R.layout.adapter_filter, parent, false)
+            )
+
+            else -> ViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.my_companies_card, parent, false)
+            )
+        }
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.myCompanyName?.text = myCompaniesList[position].displayName
-        holder.myCompanySteps?.text = myCompaniesList[position].totalDouble.toString()
-        holder.avatar
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        if (holder.itemViewType == 0) {
+            val holderZero = holder as ViewHolderZeroPosition
+            holderZero.step.setTextView("Step")
+            holderZero.time.setTextView("Time")
+
+        } else {
+            val mutableHolder: ViewHolder = holder as ViewHolder
+            mutableHolder.myCompaniesId?.text = myCompaniesList[position - 1].rank.toString()
+            mutableHolder.myCompanyName?.text = myCompaniesList[position].displayName
+            mutableHolder.myCompanySteps?.text = myCompaniesList[position].totalDouble.toString()
+
+        }
 
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            TYPE_ITEM_ZERO
+        } else {
+            TYPE_ITEM_OTHER
+        }
+    }
+
 
     override fun getItemCount(): Int {
         return myCompaniesList.size
     }
 
+    inner class ViewHolderZeroPosition(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var step: CustomFilterView = itemView.findViewById(R.id.step)
+        var time: CustomFilterView = itemView.findViewById(R.id.time)
+
+        init {
+            step.setOnClickListener { listener.onItemActivityClick() }
+            time.setOnClickListener { listener.onItemTimeFrameClick() }
+        }
+
+
+        override fun onClick(v: View?) {
+
+            when (itemView) {
+                step -> listener.onItemActivityClick()
+                time -> listener.onItemTimeFrameClick()
+            }
+
+        }
+    }
+
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var myCompaniesId: TextView? = null
         var myCompanyName: TextView? = null
         var myCompanySteps: TextView? = null
-        var avatar: Int? = null
 
         init {
-//            myCompaniesId = itemView.findViewById(R.id.id_my_company)
+            myCompaniesId = itemView.findViewById(R.id.my_company_id)
             myCompanyName = itemView.findViewById(R.id.my_company_name)
-            myCompanySteps = itemView.findViewById(R.id.my_company_steps)
-            avatar = itemView.findViewById(R.id.avatar_my_companies)
+            myCompanySteps = itemView.findViewById(R.id.my_company_distance)
         }
 
     }
+
+    interface OnItemClickListener {
+        fun onItemActivityClick()
+        fun onItemTimeFrameClick()
+
+    }
 }
+
+

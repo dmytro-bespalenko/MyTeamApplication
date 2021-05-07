@@ -1,6 +1,5 @@
-package com.example.myteamapplication.network.models
+package com.example.myteamapplication.network.models.allteams
 
-import com.example.myteamapplication.network.models.mycompanies.Result
 import com.google.gson.annotations.SerializedName
 
 
@@ -18,6 +17,7 @@ data class AllTeamModel(
     @SerializedName("userTeamResult")
     var userTeamResult: UserTeamResult? = null
 )
+
 
 data class Result(
     @SerializedName("average")

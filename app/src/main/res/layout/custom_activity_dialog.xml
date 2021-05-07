@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/chooseTitle"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/choose_which_activity_you_would_like_to_complete"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+
+            <com.example.myteamapplication.ui.customview.CustomSelectFilterView
+                android:id="@+id/left_filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:category_image="@drawable/sneakers"
+                app:category_name="STEPS"
+                android:layout_margin="10dp">
+
+            </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
+
+
+            <com.example.myteamapplication.ui.customview.CustomSelectFilterView
+                android:id="@+id/right_filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:category_image="@drawable/navigation"
+                app:category_name="KM"
+                android:layout_margin="10dp">
+
+            </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
+
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_save"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/save"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cancel"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

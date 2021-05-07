@@ -5,21 +5,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
-import com.example.myteamapplication.ui.main.fragment.BasicFragment
-import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.ui.customview.CustomActivityDialogClass
+import com.example.myteamapplication.ui.customview.CustomTimeFrameDialogClass
+import com.example.myteamapplication.ui.main.fragment.BasicFragment
+import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesFactory
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
-class MyCompaniesFragment : BasicFragment() {
+class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemClickListener {
 
     var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
-    var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList)
+    var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList, this)
 
     private var myCompaniesViewModel: MyCompaniesViewModel =
         MyCompaniesViewModel(TeamApplication.instance)
@@ -59,6 +62,15 @@ class MyCompaniesFragment : BasicFragment() {
                 })
 
     }
+
+    override fun onItemActivityClick() {
+        fragmentManager?.let { CustomActivityDialogClass().show(it, "MyCustomFragment") }
+    }
+
+    override fun onItemTimeFrameClick() {
+        fragmentManager?.let { CustomTimeFrameDialogClass().show(it, "MyCustomFragment") }
+    }
+
 
     override fun onResume() {
         super.onResume()

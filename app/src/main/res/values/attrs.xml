@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomFilterView">
+        <attr name="image_left_step" format="reference" />
+        <attr name="text_left" format="string" />
+        <attr name="text_right" format="string" />
+        <attr name="arrow_left" format="reference" />
+        <attr name="arrow_right" format="reference" />
+
+    </declare-styleable>
+    <declare-styleable name="CustomSelectFilterView">
+
+        <attr name="category_image" format="reference" />
+        <attr name="category_name" format="string" />
+
+
+    </declare-styleable>
+
+
+</resources>
+

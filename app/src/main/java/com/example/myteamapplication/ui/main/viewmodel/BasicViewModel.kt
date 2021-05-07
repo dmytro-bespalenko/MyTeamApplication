@@ -5,7 +5,8 @@ import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
 
 abstract class BasicViewModel(app: TeamApplication) : AndroidViewModel(app) {
-    protected var api: RestApi = app.api
+
+    open var api: RestApi = app.api
 
 
 }

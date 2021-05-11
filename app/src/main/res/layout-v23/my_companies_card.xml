@@ -40,7 +40,7 @@
                 android:id="@+id/my_company_name_avatar"
                 android:layout_width="54dp"
                 android:layout_height="57dp"
-                android:src="@drawable/ic_baseline_account_box_24"
+                app:srcCompat="@drawable/ic_baseline_account_box_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.119"
@@ -73,15 +73,15 @@
             <ProgressBar
                 android:id="@+id/my_company_progressBar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="264dp"
-                android:layout_height="5dp"
+                android:layout_width="248dp"
+                android:layout_height="7dp"
                 android:foreground="@color/teal_200"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintHorizontal_bias="0.719"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/my_company_distance"
-                app:layout_constraintVertical_bias="0.416" />
+                app:layout_constraintVertical_bias="0.448" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,13 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.ui.customview.CustomActivityDialogClass
+import com.example.myteamapplication.ui.customview.CustomSelectActivityDialogClass
 import com.example.myteamapplication.ui.customview.CustomTimeFrameDialogClass
 import com.example.myteamapplication.ui.main.fragment.BasicFragment
 import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
@@ -23,6 +22,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
 
     var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
     var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList, this)
+
 
     private var myCompaniesViewModel: MyCompaniesViewModel =
         MyCompaniesViewModel(TeamApplication.instance)
@@ -48,8 +48,13 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_all_team)
+
+
+
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
+
+
 
         myCompaniesViewModel
             .getCompanies()
@@ -64,7 +69,9 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     }
 
     override fun onItemActivityClick() {
-        fragmentManager?.let { CustomActivityDialogClass().show(it, "MyCustomFragment") }
+        fragmentManager?.let {
+            CustomSelectActivityDialogClass().show(it, "MyCustomFragment")
+        }
     }
 
     override fun onItemTimeFrameClick() {

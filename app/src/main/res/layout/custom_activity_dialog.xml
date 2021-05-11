@@ -37,8 +37,6 @@
                 android:id="@+id/left_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:category_image="@drawable/sneakers"
-                app:category_name="STEPS"
                 android:layout_margin="10dp">
 
             </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
@@ -48,18 +46,14 @@
                 android:id="@+id/right_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:category_image="@drawable/navigation"
-                app:category_name="KM"
                 android:layout_margin="10dp">
-
             </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
-
 
         </LinearLayout>
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_save"
+            android:id="@+id/button_activity_save"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
@@ -70,7 +64,7 @@
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_cancel"
+            android:id="@+id/button_activity_cancel"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"

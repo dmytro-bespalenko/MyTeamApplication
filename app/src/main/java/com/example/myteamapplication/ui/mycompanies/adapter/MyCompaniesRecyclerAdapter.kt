@@ -12,8 +12,7 @@ import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplay
 class MyCompaniesRecyclerAdapter(
     private val myCompaniesList: MutableList<MyCompaniesDisplayModel>,
     private val listener: OnItemClickListener
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var TYPE_ITEM_ZERO = 0
     private var TYPE_ITEM_OTHER = 1

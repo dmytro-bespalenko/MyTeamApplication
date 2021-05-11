@@ -28,8 +28,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
 
@@ -37,9 +37,7 @@
                 android:id="@+id/left_time_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                app:category_image="@drawable/calendarfirst"
-                app:category_name="TOODAY">
+                android:layout_margin="10dp">
 
             </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
 
@@ -48,8 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                app:category_image="@drawable/calendarseven"
-                app:category_name="7 DAYS">
+                >
 
             </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
 
@@ -58,8 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                app:category_image="@drawable/calendarpage"
-                app:category_name="MONTH">
+                >
 
             </com.example.myteamapplication.ui.customview.CustomSelectFilterView>
 
@@ -68,7 +64,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_save"
+            android:id="@+id/button_time_frame_save"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
@@ -79,7 +75,7 @@
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_cancel"
+            android:id="@+id/button_time_frame_cancel"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"

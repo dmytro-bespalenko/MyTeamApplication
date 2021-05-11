@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 data class DistanceFilter(
 
 
-    @PrimaryKey val uid: Int,
+    @PrimaryKey val id: Int,
     @ColumnInfo(name = "_name") val firstName: String?,
 
 

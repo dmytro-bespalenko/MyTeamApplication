@@ -2,7 +2,6 @@ package com.example.myteamapplication.ui.customview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,13 +14,11 @@ class CustomSelectFilterView @JvmOverloads constructor(
 
     private val categoryImageView: ImageView
     private var categoryTextView: TextView
-    private var customDistance: LinearLayout
 
 
     init {
         inflate(context, R.layout.custom_select_item, this)
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomSelectFilterView)
-        customDistance = findViewById(R.id.layout_without_text)
 
         categoryImageView = findViewById(R.id.image_category_select)
         categoryTextView = findViewById(R.id.text_category_select)
@@ -36,7 +33,8 @@ class CustomSelectFilterView @JvmOverloads constructor(
     }
 
     fun setBackGround(id: Int) {
-        customDistance.setBackgroundResource(id)
+        categoryImageView.setBackgroundResource(id)
+
     }
 
     fun setText(str: String) {

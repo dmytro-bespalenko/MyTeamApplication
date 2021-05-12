@@ -1,26 +1,28 @@
 package com.example.myteamapplication.ui.customview
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.marginTop
 import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
 
 class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
 
-    private lateinit var customTodayFilterView: CustomSelectFilterView
-    private lateinit var customWeekFilterView: CustomSelectFilterView
-    private lateinit var customMonthFilterView: CustomSelectFilterView
-    private lateinit var onClickDialogListener: OnClickDialogListener
+    private lateinit var imageCategory: ImageView
 
     private lateinit var saveButton: AppCompatButton
     private lateinit var cancelButton: AppCompatButton
-    private lateinit var customDistance: LinearLayout
-
+    private lateinit var customLayout: LinearLayout
+    private lateinit var createCustomLayoutDay: CustomSelectFilterView
+    private lateinit var createCustomLayoutWeek: CustomSelectFilterView
+    private lateinit var createCustomLayoutMonth: CustomSelectFilterView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,17 +35,13 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        customLayout = view.findViewById(R.id.custom_time_frame_layout)
 
+        createCustomLayoutDay = createCustomLayout(view, R.drawable.calendarfirst, "TODAY")
+        createCustomLayoutWeek = createCustomLayout(view, R.drawable.calendarseven, "7 DAYS")
+        createCustomLayoutMonth = createCustomLayout(view, R.drawable.calendarpage, "MONTH")
         setupClickListeners(view)
 
-        customTodayFilterView.setText("TODAY")
-        customTodayFilterView.setCategoryImage(R.drawable.calendarfirst)
-
-        customWeekFilterView.setText("7 DAYS")
-        customWeekFilterView.setCategoryImage(R.drawable.calendarseven)
-
-        customMonthFilterView.setText("MONTH")
-        customMonthFilterView.setCategoryImage(R.drawable.calendarpage)
 
     }
 
@@ -58,15 +56,10 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
         when (v) {
             cancelButton -> dismiss()
             saveButton -> Toast.makeText(requireContext(), "Save", Toast.LENGTH_SHORT).show()
-            customMonthFilterView -> {
-                customMonthFilterView.setBackGround(R.drawable.button_radius)
-            }
-            customWeekFilterView -> {
-                customWeekFilterView.setBackGround(R.drawable.button_radius)
-            }
-            customTodayFilterView -> {
-                customTodayFilterView.setBackGround(R.drawable.button_radius)
-            }
+
+            createCustomLayoutDay -> createCustomLayoutDay.setBackGround(R.drawable.button_radius)
+            createCustomLayoutWeek -> createCustomLayoutWeek.setBackGround(R.drawable.button_radius)
+            createCustomLayoutMonth -> createCustomLayoutMonth.setBackGround(R.drawable.button_radius)
 
         }
 
@@ -74,20 +67,48 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
 
 
     private fun setupClickListeners(view: View) {
-        customTodayFilterView = view.findViewById(R.id.left_time_button)
-        customWeekFilterView = view.findViewById(R.id.middle_time_button)
-        customMonthFilterView = view.findViewById(R.id.right_time_button)
+
         cancelButton = view.findViewById(R.id.button_time_frame_cancel)
         saveButton = view.findViewById(R.id.button_time_frame_save)
+        imageCategory = view.findViewById(R.id.image_category_select)
 
+        createCustomLayoutDay.setOnClickListener(this)
+        createCustomLayoutWeek.setOnClickListener(this)
+        createCustomLayoutMonth.setOnClickListener(this)
 
+        customLayout.setOnClickListener(this)
+        imageCategory.setOnClickListener(this)
         saveButton.setOnClickListener(this)
         cancelButton.setOnClickListener(this)
 
-        customTodayFilterView.setOnClickListener(this)
-        customWeekFilterView.setOnClickListener(this)
-        customMonthFilterView.setOnClickListener(this)
 
+    }
+
+
+    private fun createCustomLayout(v: View, id: Int, name: String): CustomSelectFilterView {
+
+        val layout: View =
+            LayoutInflater.from(v.context)
+                .inflate(R.layout.custom_select_item, customLayout, false)
+
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+        )
+
+        params.setMargins(0, 60, 40, 0)
+
+        customLayout.layoutParams = params
+
+        customLayout.addView(layout)
+
+        val customSelectFilterView = CustomSelectFilterView(v.context)
+
+        customSelectFilterView.setCategoryImage(id)
+        customSelectFilterView.setText(name)
+        customLayout.addView(customSelectFilterView)
+
+        return customSelectFilterView
     }
 
     interface OnClickDialogListener {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
@@ -14,7 +13,6 @@ import com.example.myteamapplication.R
 
 class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
 
-    private lateinit var imageCategory: ImageView
 
     private lateinit var saveButton: AppCompatButton
     private lateinit var cancelButton: AppCompatButton
@@ -36,8 +34,8 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         customLayout = view.findViewById(R.id.custom_layout)
 
-        createCustomLayoutStep = createCustomLayout(view, R.drawable.sneakers, "STEP")
-        createCustomLayoutDistance = createCustomLayout(view, R.drawable.navigation, "KM")
+        createCustomLayoutStep = createCustomLayout(view, R.drawable.sneakers, "STEP", this)
+        createCustomLayoutDistance = createCustomLayout(view, R.drawable.navigation, "KM", this)
         setupClickListeners(view)
 
     }
@@ -59,7 +57,12 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
 
     }
 
-    private fun createCustomLayout(v: View, id: Int, name: String): CustomSelectFilterView {
+    private fun createCustomLayout(
+        v: View,
+        id: Int,
+        name: String,
+        onClickListener: View.OnClickListener
+    ): CustomSelectFilterView {
 
         val layout: View =
             LayoutInflater.from(v.context)
@@ -69,6 +72,8 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.MATCH_PARENT,
         )
+        params.setMargins(80, 60, 0, 0)
+
         layout.layoutParams = params
 
         customLayout.addView(layout)
@@ -78,6 +83,7 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
         customSelectFilterView.setText(name)
 
         customLayout.addView(customSelectFilterView)
+        customSelectFilterView.setOnClickListener(onClickListener)
 
         return customSelectFilterView
     }
@@ -85,10 +91,6 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
     private fun setupClickListeners(view: View) {
         cancelButton = view.findViewById(R.id.button_activity_cancel)
         saveButton = view.findViewById(R.id.button_activity_save)
-
-        imageCategory = view.findViewById(R.id.image_category_select)
-        createCustomLayoutStep.setOnClickListener(this)
-        createCustomLayoutDistance.setOnClickListener(this)
         cancelButton.setOnClickListener(this)
         saveButton.setOnClickListener(this)
 

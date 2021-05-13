@@ -2,15 +2,10 @@ package com.example.myteamapplication.repositories
 
 import com.example.myteamapplication.ui.allteams.viewmodel.DistanceFilter
 
-class DistanceFilterRepository {
+interface DistanceFilterRepository {
 
-    fun save(distanceFilter: DistanceFilter) {
-        TODO("Not yet implemented")
-    }
+    fun save(distanceFilter: DistanceFilter)
 
-    fun get(): DistanceFilter? {
-        TODO("Not yet implemented")
-    }
-
+    fun get(): DistanceFilter
 
 }

@@ -11,7 +11,7 @@ class MyCompaniesFactory() : ViewModelProvider.Factory {
 
         if (modelClass.isAssignableFrom(MyCompaniesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MyCompaniesViewModel(TeamApplication.instance) as T
+            return MyCompaniesViewModel(TeamApplication.instance, null) as T
         }
         throw IllegalArgumentException("Unable to construct viewmodel")
     }

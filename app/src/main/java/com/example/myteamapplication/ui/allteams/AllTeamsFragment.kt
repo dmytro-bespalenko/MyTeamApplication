@@ -20,7 +20,8 @@ class AllTeamsFragment : BasicFragment() {
 
     var allTeamsList: MutableList<AllTeamsDisplayModel> = mutableListOf()
 
-    private var allTeamViewModel: AllTeamsViewModel = AllTeamsViewModel(TeamApplication.instance)
+    private var allTeamViewModel: AllTeamsViewModel = AllTeamsViewModel(
+        TeamApplication.instance)
     var recyclerAdapter = AllTeamRecyclerAdapter(allTeamsList)
 
     override fun onCreate(savedInstanceState: Bundle?) {

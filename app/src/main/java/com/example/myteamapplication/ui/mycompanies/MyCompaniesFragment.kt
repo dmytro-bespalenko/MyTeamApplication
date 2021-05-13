@@ -24,8 +24,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList, this)
 
 
-    private var myCompaniesViewModel: MyCompaniesViewModel =
-        MyCompaniesViewModel(TeamApplication.instance)
+    private lateinit var myCompaniesViewModel: MyCompaniesViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -37,9 +37,9 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         customLayout = view.findViewById(R.id.custom_time_frame_layout)
 
-        createCustomLayoutDay = createCustomLayout(view, R.drawable.calendarfirst, "TODAY")
-        createCustomLayoutWeek = createCustomLayout(view, R.drawable.calendarseven, "7 DAYS")
-        createCustomLayoutMonth = createCustomLayout(view, R.drawable.calendarpage, "MONTH")
+        createCustomLayoutDay = createCustomLayout(view, R.drawable.calendarfirst, "TODAY", this)
+        createCustomLayoutWeek = createCustomLayout(view, R.drawable.calendarseven, "7 DAYS", this)
+        createCustomLayoutMonth = createCustomLayout(view, R.drawable.calendarpage, "MONTH", this)
         setupClickListeners(view)
 
 
@@ -72,10 +72,6 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
         saveButton = view.findViewById(R.id.button_time_frame_save)
         imageCategory = view.findViewById(R.id.image_category_select)
 
-        createCustomLayoutDay.setOnClickListener(this)
-        createCustomLayoutWeek.setOnClickListener(this)
-        createCustomLayoutMonth.setOnClickListener(this)
-
         customLayout.setOnClickListener(this)
         imageCategory.setOnClickListener(this)
         saveButton.setOnClickListener(this)
@@ -85,7 +81,12 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
     }
 
 
-    private fun createCustomLayout(v: View, id: Int, name: String): CustomSelectFilterView {
+    private fun createCustomLayout(
+        v: View,
+        id: Int,
+        name: String,
+        onClickListener: View.OnClickListener
+    ): CustomSelectFilterView {
 
         val layout: View =
             LayoutInflater.from(v.context)
@@ -106,8 +107,9 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
 
         customSelectFilterView.setCategoryImage(id)
         customSelectFilterView.setText(name)
-        customLayout.addView(customSelectFilterView)
 
+        customLayout.addView(customSelectFilterView)
+        customSelectFilterView.setOnClickListener(onClickListener)
         return customSelectFilterView
     }
 

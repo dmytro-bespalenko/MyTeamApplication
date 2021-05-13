@@ -1,13 +1,11 @@
 package com.example.myteamapplication.ui.allteams.viewmodel
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 
 data class DistanceFilter(
 
 
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "_name") val firstName: String?,
+    val id: Int,
+    val name: String,
 
 
     )

@@ -12,12 +12,12 @@ import io.reactivex.schedulers.Schedulers
 
 @SuppressLint("CheckResult")
 
-class AllTeamsViewModel(instance: TeamApplication) : BasicViewModel(instance) {
+class AllTeamsViewModel(
+    instance: TeamApplication
+) : BasicViewModel(instance) {
 
     private val allTeams: MutableLiveData<List<AllTeamsDisplayModel>> =
         MutableLiveData<List<AllTeamsDisplayModel>>()
-
-    private var distanceFilterRepository: DistanceFilterRepository = DistanceFilterRepository()
 
     private val distanceFilter: MutableLiveData<DistanceFilter> = MutableLiveData()
 
@@ -25,15 +25,7 @@ class AllTeamsViewModel(instance: TeamApplication) : BasicViewModel(instance) {
         return allTeams
     }
 
-    fun onDistanceFilterSelected(distance: DistanceFilter) {
-        distanceFilterRepository.save(distance)
-        distanceFilter.postValue(distanceFilter.value)
 
-    }
-
-    fun updateFilters() {
-        distanceFilter.postValue(distanceFilterRepository.get())
-    }
 
     fun updateAllTeams() {
         api.getAllTeams()

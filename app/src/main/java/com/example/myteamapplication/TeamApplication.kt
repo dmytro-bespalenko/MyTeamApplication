@@ -3,9 +3,13 @@ package com.example.myteamapplication
 import android.app.Application
 import com.example.myteamapplication.network.NetworkManager
 import com.example.myteamapplication.network.RestApi
+import com.example.myteamapplication.room.FilterDatabase
 
 class TeamApplication : Application() {
 
+
+    lateinit var database: FilterDatabase
+        private set
 
     companion object {
         lateinit var instance: TeamApplication
@@ -22,6 +26,10 @@ class TeamApplication : Application() {
 
         instance = this
         api = NetworkManager.getRestApi()
+
+//        database = FilterDatabase.getInstance(instance)
+//        RoomDistanceFilterRepository.getInstance(instance)
+
 
     }
 

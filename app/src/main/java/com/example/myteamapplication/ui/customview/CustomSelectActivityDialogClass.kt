@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
@@ -15,6 +16,8 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
 
 
     private lateinit var saveButton: AppCompatButton
+    private lateinit var categoryRadioButton: RadioButton
+
     private lateinit var cancelButton: AppCompatButton
     private lateinit var createCustomLayoutStep: CustomSelectFilterView
     private lateinit var createCustomLayoutDistance: CustomSelectFilterView
@@ -36,6 +39,7 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
 
         createCustomLayoutStep = createCustomLayout(view, R.drawable.sneakers, "STEP", this)
         createCustomLayoutDistance = createCustomLayout(view, R.drawable.navigation, "KM", this)
+
         setupClickListeners(view)
 
     }
@@ -50,9 +54,12 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             cancelButton -> dismiss()
+
+//            createCustomLayoutStep -> createCustomLayoutStep.setBackGround(R.drawable.button_radius)
+
             saveButton -> Toast.makeText(requireContext(), "SAVE", Toast.LENGTH_SHORT).show()
-            createCustomLayoutStep -> createCustomLayoutStep.setBackGround(R.drawable.button_radius)
-            createCustomLayoutDistance -> createCustomLayoutDistance.setBackGround(R.drawable.button_radius)
+
+//            createCustomLayoutDistance -> createCustomLayoutDistance.setBackGround(R.drawable.button_radius)
         }
 
     }
@@ -80,6 +87,7 @@ class CustomSelectActivityDialogClass : DialogFragment(), View.OnClickListener {
 
         val customSelectFilterView = CustomSelectFilterView(v.context)
         customSelectFilterView.setCategoryImage(id)
+
         customSelectFilterView.setText(name)
 
         customLayout.addView(customSelectFilterView)

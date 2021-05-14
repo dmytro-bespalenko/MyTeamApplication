@@ -8,4 +8,7 @@ interface DistanceFilterRepository {
 
     fun get(): DistanceFilter
 
+    fun saveAllFilters(list: MutableList<String>)
+
+
 }

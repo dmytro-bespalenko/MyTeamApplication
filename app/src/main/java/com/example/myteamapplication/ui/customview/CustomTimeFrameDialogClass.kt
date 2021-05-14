@@ -1,7 +1,6 @@
 package com.example.myteamapplication.ui.customview
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.marginTop
 import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
+import com.example.myteamapplication.ui.allteams.viewmodel.DistanceFilter
 
-class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
+class CustomTimeFrameDialogClass(onClickListener: OnClickDialogListener) : DialogFragment(),
+    View.OnClickListener {
 
     private lateinit var imageCategory: ImageView
 
@@ -23,6 +23,8 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
     private lateinit var createCustomLayoutDay: CustomSelectFilterView
     private lateinit var createCustomLayoutWeek: CustomSelectFilterView
     private lateinit var createCustomLayoutMonth: CustomSelectFilterView
+    private var onClickDialogListener: OnClickDialogListener = onClickListener
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +63,12 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
             createCustomLayoutWeek -> createCustomLayoutWeek.setBackGround(R.drawable.button_radius)
             createCustomLayoutMonth -> createCustomLayoutMonth.setBackGround(R.drawable.button_radius)
 
+//            createCustomLayoutDay -> onClickDialogListener.onDialogSaveClick(
+//                DistanceFilter(
+//                    0,
+//                    "DAY"
+//                )
+//            )
         }
 
     }
@@ -110,11 +118,12 @@ class CustomTimeFrameDialogClass : DialogFragment(), View.OnClickListener {
 
         customLayout.addView(customSelectFilterView)
         customSelectFilterView.setOnClickListener(onClickListener)
+
         return customSelectFilterView
     }
 
     interface OnClickDialogListener {
-        fun onDialogSaveClick()
+        fun onDialogSaveClick(distance: DistanceFilter)
 
     }
 

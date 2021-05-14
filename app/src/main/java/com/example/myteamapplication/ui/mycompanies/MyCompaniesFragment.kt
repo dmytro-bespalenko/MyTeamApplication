@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
+import com.example.myteamapplication.ui.allteams.viewmodel.DistanceFilter
 import com.example.myteamapplication.ui.customview.CustomSelectActivityDialogClass
 import com.example.myteamapplication.ui.customview.CustomTimeFrameDialogClass
 import com.example.myteamapplication.ui.main.fragment.BasicFragment
@@ -18,11 +20,12 @@ import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplay
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesFactory
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
-class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemClickListener {
+class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemClickListener,
+    CustomTimeFrameDialogClass.OnClickDialogListener {
 
     var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
     var recyclerAdapter = MyCompaniesRecyclerAdapter(myCompaniesList, this)
-
+    var distanceFilterList: MutableList<String> = mutableListOf()
 
     private lateinit var myCompaniesViewModel: MyCompaniesViewModel
 
@@ -30,7 +33,8 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         myCompaniesViewModel = ViewModelProvider(
-            requireActivity(), MyCompaniesFactory()
+            requireActivity(),
+            MyCompaniesFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
         )
             .get(MyCompaniesViewModel::class.java)
 
@@ -48,12 +52,10 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_all_team)
 
-
-
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
 
-
+//        myCompaniesViewModel.getDistanceFilers()
 
         myCompaniesViewModel
             .getCompanies()
@@ -74,13 +76,18 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     }
 
     override fun onItemTimeFrameClick() {
-        fragmentManager?.let { CustomTimeFrameDialogClass().show(it, "MyCustomFragment") }
+        fragmentManager?.let { CustomTimeFrameDialogClass(this).show(it, "MyCustomFragment") }
     }
 
 
     override fun onResume() {
         super.onResume()
         Log.d("TAG", "onResume: $this")
+        myCompaniesViewModel.updateFilters()
         myCompaniesViewModel.updateCompanies()
+    }
+
+    override fun onDialogSaveClick(distance: DistanceFilter) {
+        myCompaniesViewModel.onDistanceFilterSelected(distance)
     }
 }

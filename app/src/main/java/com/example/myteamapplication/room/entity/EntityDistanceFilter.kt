@@ -15,13 +15,12 @@ data class EntityDistanceFilter(
     @ColumnInfo(name = "name")
     val name: String,
 
-
     @ColumnInfo(name = "checked")
     val isChecked: Boolean,
 
-
+    @ColumnInfo(name = "filters")
     @TypeConverters(FilterConverter::class)
-    var filters: List<String>? = null
+    var filters: List<String>
 
 )
 

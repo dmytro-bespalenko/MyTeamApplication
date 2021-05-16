@@ -1,22 +1,23 @@
 package com.example.myteamapplication.room
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import java.util.stream.Collectors
+import com.google.gson.Gson
+
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 
-class FilterConverter {
+open class FilterConverter {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     @TypeConverter
-    fun fromFilters(filters: List<String?>): String? {
-        return filters.stream().collect(Collectors.joining(","))
+    open fun fromString(value: String?): List<String?>? {
+        val listType: Type = object : TypeToken<ArrayList<String?>?>() {}.type
+        return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun toFilters(data: String): String {
-        return mutableListOf(data.split(",")).toString()
+    open fun fromArrayList(list: List<String?>?): String? {
+        val gson = Gson()
+        return gson.toJson(list)
     }
 }

@@ -36,7 +36,8 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
                 EntityDistanceFilter(
                     distanceFilter.id,
                     distanceFilter.name,
-                    distanceFilter.isChecked
+                    distanceFilter.isChecked,
+                    distanceFilter.filters
                 )
             )
         }
@@ -44,13 +45,13 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
     }
 
 
-    override fun get(): DistanceFilter {
-        TODO("Not yet implemented")
+//    override fun get(): DistanceFilter {
+//        TODO("Not yet implemented")
+//
+////        distanceDao.getFilter()
+//    }
 
-//        distanceDao.getFilter()
-    }
-
-    override fun saveAllFilters(list: MutableList<String>) {
+    override fun saveAllFilters(list: List<String>) {
 
     }
 }

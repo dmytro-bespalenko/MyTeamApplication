@@ -42,7 +42,7 @@ class MyCompaniesViewModel(
     }
 
     fun updateFilters() {
-        distanceFilter.postValue(distanceFilterRepository.get())
+//        distanceFilter.postValue(distanceFilterRepository.get())
     }
 
     fun updateCompanies() {

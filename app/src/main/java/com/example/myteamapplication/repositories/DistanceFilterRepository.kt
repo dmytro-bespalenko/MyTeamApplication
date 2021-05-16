@@ -6,9 +6,9 @@ interface DistanceFilterRepository {
 
     fun save(distanceFilter: DistanceFilter)
 
-    fun get(): DistanceFilter
+//    fun get(): DistanceFilter
 
-    fun saveAllFilters(list: MutableList<String>)
+    fun saveAllFilters(list: List<String>)
 
 
 }

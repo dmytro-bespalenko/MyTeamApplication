@@ -79,7 +79,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.719"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/my_company_name_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/my_company_distance"
                 app:layout_constraintVertical_bias="0.448" />
 

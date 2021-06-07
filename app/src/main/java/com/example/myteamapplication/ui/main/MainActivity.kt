@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = pagerAdapter
 
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "MY TEAM"

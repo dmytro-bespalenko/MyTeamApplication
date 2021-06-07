@@ -1,4 +1,4 @@
-package com.example.myteamapplication.ui.mycompanies.veiwmodel
+package com.example.myteamapplication.ui.myteam.viewmodel
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -9,15 +9,14 @@ import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @SuppressLint("CheckResult")
-class MyCompaniesViewModel(
-    instance: TeamApplication, private
+class MyTeamViewModel(
+    instance: TeamApplication,
     var distanceFilterRepository: RoomDistanceFilterRepository
 ) : BasicViewModel(instance) {
 
@@ -28,12 +27,6 @@ class MyCompaniesViewModel(
     private val activeDistanceFilter: MutableLiveData<String> = MutableLiveData()
     private val activeTimePeriodFilter: MutableLiveData<String> = MutableLiveData()
 
-    private val myCompanies: MutableLiveData<List<MyCompaniesDisplayModel>> =
-        MutableLiveData<List<MyCompaniesDisplayModel>>()
-
-    fun getCompanies(): LiveData<List<MyCompaniesDisplayModel>> {
-        return myCompanies
-    }
 
     fun getDistanceFilters(): LiveData<List<String>> {
         return distanceFilters
@@ -52,28 +45,6 @@ class MyCompaniesViewModel(
     }
 
 
-    fun updateCompanies() {
-        api.getMyCompany()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { all ->
-                    myCompanies.postValue(all.results.map {
-                        MyCompaniesDisplayModel(
-                            it.avatar,
-                            it.average,
-                            it.averageDouble,
-                            it.displayName,
-                            it.rank,
-                            it.total,
-                            it.totalDouble,
-                            it.userId
-                        )
-                    })
-                },
-                { t -> Log.d("TAG", "updateCompanies: $t") }
-            )
-    }
 
     fun updateDistanceFilters() {
         viewModelScope.launch {

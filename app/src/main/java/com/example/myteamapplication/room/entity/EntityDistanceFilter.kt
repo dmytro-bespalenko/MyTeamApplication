@@ -12,15 +12,22 @@ data class EntityDistanceFilter(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
-    @ColumnInfo(name = "name")
-    val name: String,
+    @ColumnInfo(name = "activeDistance")
+    val activeDistance: String,
 
-    @ColumnInfo(name = "checked")
-    val isChecked: Boolean,
+    @ColumnInfo(name = "activePeriod")
+    val activePeriod: String,
 
-    @ColumnInfo(name = "filters")
+
+    @ColumnInfo(name = "filtersPeriod")
     @TypeConverters(FilterConverter::class)
-    var filters: List<String>
+    var filtersPeriodName: List<String>,
+
+
+    @ColumnInfo(name = "filtersDistance")
+    @TypeConverters(FilterConverter::class)
+    var filtersDistanceName: List<String>
+
 
 )
 

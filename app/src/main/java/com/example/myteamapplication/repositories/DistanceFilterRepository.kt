@@ -1,14 +1,13 @@
 package com.example.myteamapplication.repositories
 
-import com.example.myteamapplication.ui.allteams.viewmodel.DistanceFilter
+import io.reactivex.Single
 
 interface DistanceFilterRepository {
 
-    fun save(distanceFilter: DistanceFilter)
-
-//    fun get(): DistanceFilter
-
-    fun saveAllFilters(list: List<String>)
-
+    fun getActivePeriod(): Single<String>
+    fun getActiveDistance(): Single<String>
+    suspend fun getDistanceFilters(): List<String>
+    fun getTimePeriodFilters(): Single<List<String>>
+    fun updateActiveDistance(step: String?)
 
 }

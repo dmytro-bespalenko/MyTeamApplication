@@ -1,31 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:paddingTop="20dp"
     tools:context=".ui.myteam.MyTeamFragment">
 
 
-    <com.example.myteamapplication.ui.customview.CustomFilterView
-        android:id="@+id/step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        app:image_left_step="@drawable/ic_baseline_directions_walk_24"
-        app:arrow_left="@drawable/ic_baseline_arrow_drop_down_24"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_all_team"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-        />
-
-    <com.example.myteamapplication.ui.customview.CustomFilterView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        app:arrow_left="@drawable/ic_baseline_arrow_drop_down_24"
         />
 
 

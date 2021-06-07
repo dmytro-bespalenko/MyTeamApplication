@@ -25,15 +25,16 @@
             android:text="@string/choose_which_activity_you_would_like_to_complete"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:id="@+id/custom_layout"
-            android:layout_width="match_parent"
+        <com.example.myteamapplication.ui.customview.IndicatorRadioGroup
+            android:id="@+id/indicator_radio_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
+        </com.example.myteamapplication.ui.customview.IndicatorRadioGroup>
 
 
         <androidx.appcompat.widget.AppCompatButton

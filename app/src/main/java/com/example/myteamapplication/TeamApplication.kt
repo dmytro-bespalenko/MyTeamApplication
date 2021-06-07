@@ -8,8 +8,8 @@ import com.example.myteamapplication.room.FilterDatabase
 class TeamApplication : Application() {
 
 
-    lateinit var database: FilterDatabase
-        private set
+   private lateinit var database: FilterDatabase
+
 
     companion object {
         lateinit var instance: TeamApplication
@@ -27,10 +27,10 @@ class TeamApplication : Application() {
         instance = this
         api = NetworkManager.getRestApi()
 
-//        database = FilterDatabase.getInstance(instance)
-//        RoomDistanceFilterRepository.getInstance(instance)
+        database = FilterDatabase.getInstance(instance)
 
 
     }
+
 
 }

@@ -3,9 +3,11 @@ package com.example.myteamapplication.ui.allteams.viewmodel
 
 data class DistanceFilter(
 
-    val id: Int,
-    val name: String,
-    val isChecked: Boolean,
-    val filters: List<String>
+    var id: Int,
+    var activeDistance: String,
+    var activePeriod: String,
+    var filtersPeriod: MutableList<String>,
+    val filtersDistance: MutableList<String>
+
 
 )

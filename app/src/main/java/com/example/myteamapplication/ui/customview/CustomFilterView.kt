@@ -17,11 +17,9 @@ class CustomFilterView @JvmOverloads constructor(
 
     init {
         inflate(context, R.layout.custom_filter, this)
-
         val imageViewLeft: ImageView = findViewById(R.id.image_step)
         filterTextView = findViewById(R.id.text_step)
         val imageArrowLeft: ImageView = findViewById(R.id.image_arrow)
-
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.CustomFilterView)
         imageViewLeft.setImageDrawable(attributes.getDrawable(R.styleable.CustomFilterView_image_left_step))
         filterTextView.text = attributes.getText(R.styleable.CustomFilterView_text_left)

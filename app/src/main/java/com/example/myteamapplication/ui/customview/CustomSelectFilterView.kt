@@ -12,7 +12,6 @@ class CustomSelectFilterView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs), View.OnClickListener {
 
 
-//    private val categoryRadioButton: Button
     private var categoryTextView: TextView
     private var image: ImageView
     private var layoutImage: LinearLayout

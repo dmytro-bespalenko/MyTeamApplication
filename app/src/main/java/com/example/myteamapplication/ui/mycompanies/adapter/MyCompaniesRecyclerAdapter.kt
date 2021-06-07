@@ -7,47 +7,47 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.ui.customview.CustomFilterView
-import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 
 class MyCompaniesRecyclerAdapter(
-    private val myCompaniesList: MutableList<MyCompaniesDisplayModel>,
+    private val recyclerAdapterData: RecyclerAdapterData,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
+
+) {
 
     private var TYPE_ITEM_ZERO = 0
     private var TYPE_ITEM_OTHER = 1
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
 
         return when (viewType) {
             TYPE_ITEM_ZERO -> ViewHolderZeroPosition(
                 LayoutInflater.from(parent.context).inflate(R.layout.adapter_filter, parent, false)
             )
-
             else -> ViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.my_companies_card, parent, false)
             )
         }
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (holder.itemViewType == 0) {
-            val holderZero = holder as ViewHolderZeroPosition
-            holderZero.step.setTextView("Step")
-            holderZero.time.setTextView("Time")
+            if (holder.itemViewType == 0) {
+                val holderZero = holder as ViewHolderZeroPosition
+                holderZero.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
+                holderZero.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
 
-        } else {
-            val mutableHolder: ViewHolder = holder as ViewHolder
-            mutableHolder.myCompaniesId?.text = myCompaniesList[position - 1].rank.toString()
-            mutableHolder.myCompanyName?.text = myCompaniesList[position].displayName
-            mutableHolder.myCompanySteps?.text = myCompaniesList[position].totalDouble.toString()
-
-        }
+            } else {
+                val mutableHolder: ViewHolder = holder as ViewHolder
+                mutableHolder.myCompaniesId?.text =
+                    recyclerAdapterData.myCompaniesDisplayModel[position - 1].rank.toString()
+                mutableHolder.myCompanyName?.text =
+                    recyclerAdapterData.myCompaniesDisplayModel[position].displayName
+                mutableHolder.myCompanySteps?.text =
+                    recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
+            }
 
     }
 
@@ -61,7 +61,7 @@ class MyCompaniesRecyclerAdapter(
 
 
     override fun getItemCount(): Int {
-        return myCompaniesList.size
+        return recyclerAdapterData.myCompaniesDisplayModel.size
     }
 
     inner class ViewHolderZeroPosition(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -71,7 +71,7 @@ class MyCompaniesRecyclerAdapter(
         var time: CustomFilterView = itemView.findViewById(R.id.time)
 
         init {
-            step.setOnClickListener { listener.onItemActivityClick() }
+            step.setOnClickListener { listener.onItemDistanceClick() }
             time.setOnClickListener { listener.onItemTimeFrameClick() }
         }
 
@@ -79,7 +79,7 @@ class MyCompaniesRecyclerAdapter(
         override fun onClick(v: View?) {
 
             when (itemView) {
-                step -> listener.onItemActivityClick()
+                step -> listener.onItemDistanceClick()
                 time -> listener.onItemTimeFrameClick()
             }
 
@@ -102,10 +102,11 @@ class MyCompaniesRecyclerAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemActivityClick()
+        fun onItemDistanceClick()
         fun onItemTimeFrameClick()
 
     }
 }
+
 
 

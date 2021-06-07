@@ -4,6 +4,8 @@ import com.example.myteamapplication.network.models.allteams.AllTeamModel
 import com.example.myteamapplication.network.models.mycompanies.MyCompaniesModel
 import com.example.myteamapplication.network.models.myteam.MyTeamModel
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import retrofit2.http.GET
 
 interface RestApi {
@@ -17,6 +19,9 @@ interface RestApi {
 
     @GET("/v1/d1877370-b414-4ca0-8e7a-c55d8d6c4bac")
     fun getMyTeam(): Single<MyTeamModel>
+
+    @GET("posts")
+    fun getCompaniesAsync(): Deferred<Response<MyCompaniesModel>>
 
 
 }

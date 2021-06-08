@@ -9,26 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.customview.SelectDistanceDialogFragment
 import com.example.myteamapplication.ui.customview.SelectTimePeriodDialogFragment
 import com.example.myteamapplication.ui.main.fragment.BasicFragment
 import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
 import com.example.myteamapplication.ui.mycompanies.adapter.RecyclerAdapterData
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
-import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesFactory
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemClickListener {
+class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
+    MyCompaniesRecyclerAdapter.OnItemClickListener {
 
+    override fun getViewModel(): Class<MyCompaniesViewModel> = MyCompaniesViewModel::class.java
     private var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
-
     private var distanceFilterList: ArrayList<String> = ArrayList()
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
     var activeDistanceFilter: MutableList<String> = mutableListOf()
@@ -37,24 +34,12 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     private val REQUEST_DISTANCE_DIALOG = 0
     private val REQUEST_TIME_PERIOD_DIALOG = 1
 
-    var recyclerAdapter =
+
+    private var recyclerAdapter =
         MyCompaniesRecyclerAdapter(
             RecyclerAdapterData(myCompaniesList, activeDistanceFilter, activeTimePeriodFilter),
             this
         )
-
-    private lateinit var myCompaniesViewModel: MyCompaniesViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        myCompaniesViewModel = ViewModelProvider(
-            requireActivity(),
-            MyCompaniesFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
-        )
-            .get(MyCompaniesViewModel::class.java)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +49,6 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
         return inflater.inflate(R.layout.fragment_all_teams, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -72,7 +56,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
 
-        myCompaniesViewModel
+        viewModel
             .getCompanies()
             .observe(viewLifecycleOwner,
                 { c ->
@@ -82,7 +66,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
 
                 })
 
-        myCompaniesViewModel
+        viewModel
             .getActiveDistanceFilter()
             .observe(viewLifecycleOwner,
                 { ad ->
@@ -92,7 +76,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
                 }
             )
 
-        myCompaniesViewModel
+        viewModel
             .getActiveTimePeriodFilter()
             .observe(viewLifecycleOwner,
                 { tp ->
@@ -102,7 +86,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
                 }
             )
 
-        myCompaniesViewModel
+        viewModel
             .getDistanceFilters()
             .observe(viewLifecycleOwner,
                 { f ->
@@ -112,7 +96,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
 
             )
 
-        myCompaniesViewModel
+        viewModel
             .getTimePeriodFilters()
             .observe(viewLifecycleOwner,
                 { f ->
@@ -128,12 +112,12 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
             when (requestCode) {
                 REQUEST_DISTANCE_DIALOG -> {
                     activeDistanceFilter[0] = data?.getStringExtra("step").toString()
-                    myCompaniesViewModel.setActiveDistanceFilter(activeDistanceFilter[0])
+                    viewModel.setActiveDistanceFilter(activeDistanceFilter[0])
                     recyclerAdapter.notifyDataSetChanged()
                 }
                 REQUEST_TIME_PERIOD_DIALOG -> {
                     activeTimePeriodFilter[0] = data?.getStringExtra("time").toString()
-                    myCompaniesViewModel.setActiveTimePeriodFilter(activeTimePeriodFilter[0])
+                    viewModel.setActiveTimePeriodFilter(activeTimePeriodFilter[0])
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }
@@ -141,6 +125,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
     }
 
     companion object {
+
         fun newSelectDistanceDialogFragmentInstance(
             fragment: Fragment,
             filters: List<String>
@@ -177,6 +162,7 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
 
     }
 
+
     override fun onItemTimeFrameClick() {
         fragmentManager?.let {
             newSelectTimePeriodDialogFragmentInstance(this, timePeriodFiltersList)
@@ -187,15 +173,13 @@ class MyCompaniesFragment : BasicFragment(), MyCompaniesRecyclerAdapter.OnItemCl
         }
     }
 
-
     override fun onResume() {
         super.onResume()
-        myCompaniesViewModel.updateCompanies()
-        myCompaniesViewModel.updateDistanceFilters()
-        myCompaniesViewModel.updateTimePeriodFilters()
-        myCompaniesViewModel.updateActiveDistanceFilter()
-        myCompaniesViewModel.updateActiveTimePeriodFilter()
-
+        viewModel.updateCompanies()
+        viewModel.updateDistanceFilters()
+        viewModel.updateTimePeriodFilters()
+        viewModel.updateActiveDistanceFilter()
+        viewModel.updateActiveTimePeriodFilter()
     }
 
 

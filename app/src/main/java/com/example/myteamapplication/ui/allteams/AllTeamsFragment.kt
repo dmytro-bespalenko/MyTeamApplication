@@ -5,34 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.ui.allteams.adapters.AllTeamRecyclerAdapter
-import com.example.myteamapplication.ui.main.fragment.BasicFragment
-import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsDisplayModel
-import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsFactory
 import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsViewModel
+import com.example.myteamapplication.ui.main.fragment.BasicFragment
 
-class AllTeamsFragment : BasicFragment() {
+class AllTeamsFragment : BasicFragment<AllTeamsViewModel>() {
 
+    override fun getViewModel(): Class<AllTeamsViewModel> = AllTeamsViewModel::class.java
     var allTeamsList: MutableList<AllTeamsDisplayModel> = mutableListOf()
-
-    private var allTeamViewModel: AllTeamsViewModel = AllTeamsViewModel(
-        TeamApplication.instance)
     var recyclerAdapter = AllTeamRecyclerAdapter(allTeamsList)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        allTeamViewModel = ViewModelProvider(
-            requireActivity(),
-            AllTeamsFactory()
-        )
-            .get(AllTeamsViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +33,7 @@ class AllTeamsFragment : BasicFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
 
-        allTeamViewModel.getTeams().observe(requireActivity(), { a ->
+        viewModel.getTeams().observe(requireActivity(), { a ->
             allTeamsList.clear()
             allTeamsList.addAll(a)
             recyclerAdapter.notifyDataSetChanged()
@@ -59,8 +44,10 @@ class AllTeamsFragment : BasicFragment() {
 
     override fun onResume() {
         super.onResume()
-        allTeamViewModel.updateAllTeams()
+        viewModel.updateAllTeams()
         Log.d("TAG", "onResume: $this")
     }
+
+
 }
 

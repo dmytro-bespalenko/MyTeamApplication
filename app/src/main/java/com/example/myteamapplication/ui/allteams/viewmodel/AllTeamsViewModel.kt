@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.repositories.DistanceFilterRepository
 import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,13 +18,9 @@ class AllTeamsViewModel(
     private val allTeams: MutableLiveData<List<AllTeamsDisplayModel>> =
         MutableLiveData<List<AllTeamsDisplayModel>>()
 
-    private val distanceFilter: MutableLiveData<DistanceFilter> = MutableLiveData()
-
     fun getTeams(): LiveData<List<AllTeamsDisplayModel>> {
         return allTeams
     }
-
-
 
     fun updateAllTeams() {
         api.getAllTeams()

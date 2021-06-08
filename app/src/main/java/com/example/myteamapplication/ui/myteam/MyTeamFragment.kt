@@ -25,29 +25,31 @@ import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListener {
+class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.OnItemClickListener {
 
     var activeDistanceFilter: MutableList<String> = mutableListOf()
     var activeTimePeriodFilter: MutableList<String> = mutableListOf()
     private var distanceFilterList: ArrayList<String> = ArrayList()
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
+
     private val REQUEST_DISTANCE_DIALOG = 0
     private val REQUEST_TIME_PERIOD_DIALOG = 1
 
+    override fun getViewModel(): Class<MyTeamViewModel> = MyTeamViewModel::class.java
 
     var recyclerAdapter = MyTeamRecyclerAdapter(
         MyTeamAdapterData(activeDistanceFilter, activeTimePeriodFilter), this
     )
 
-    private lateinit var myTeamViewModel: MyTeamViewModel
+//    private lateinit var myTeamViewModel: MyTeamViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        myTeamViewModel = ViewModelProvider(
-            requireActivity(),
-            MyTeamFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
-        ).get(MyTeamViewModel::class.java)
+//        myTeamViewModel = ViewModelProvider(
+//            requireActivity(),
+//            MyTeamFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
+//        ).get(MyTeamViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -65,7 +67,7 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
 
-        myTeamViewModel
+        viewModel
             .getActiveDistanceFilter()
             .observe(viewLifecycleOwner,
                 { ad ->
@@ -75,7 +77,7 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
                 }
             )
 
-        myTeamViewModel
+        viewModel
             .getActiveTimePeriodFilter()
             .observe(viewLifecycleOwner,
                 { tp ->
@@ -85,7 +87,7 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
                 }
             )
 
-        myTeamViewModel
+        viewModel
             .getDistanceFilters()
             .observe(viewLifecycleOwner,
                 { f ->
@@ -95,7 +97,7 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
 
             )
 
-        myTeamViewModel
+        viewModel
             .getTimePeriodFilters()
             .observe(viewLifecycleOwner,
                 { f ->
@@ -112,12 +114,12 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
             when (requestCode) {
                 REQUEST_DISTANCE_DIALOG -> {
                     activeDistanceFilter[0] = data?.getStringExtra("step").toString()
-                    myTeamViewModel.setActiveDistanceFilter(activeDistanceFilter[0])
+                    viewModel.setActiveDistanceFilter(activeDistanceFilter[0])
                     recyclerAdapter.notifyDataSetChanged()
                 }
                 REQUEST_TIME_PERIOD_DIALOG -> {
                     activeTimePeriodFilter[0] = data?.getStringExtra("time").toString()
-                    myTeamViewModel.setActiveTimePeriodFilter(activeTimePeriodFilter[0])
+                    viewModel.setActiveTimePeriodFilter(activeTimePeriodFilter[0])
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }
@@ -180,10 +182,10 @@ class MyTeamFragment : BasicFragment(), MyTeamRecyclerAdapter.OnItemClickListene
 
     override fun onResume() {
         super.onResume()
-        myTeamViewModel.updateDistanceFilters()
-        myTeamViewModel.updateTimePeriodFilters()
-        myTeamViewModel.updateActiveDistanceFilter()
-        myTeamViewModel.updateActiveTimePeriodFilter()
+        viewModel.updateDistanceFilters()
+        viewModel.updateTimePeriodFilters()
+        viewModel.updateActiveDistanceFilter()
+        viewModel.updateActiveTimePeriodFilter()
 
     }
 

@@ -23,32 +23,12 @@ class MyCompaniesViewModel(
 
     override var api: RestApi = instance.api
 
-    private val distanceFilters: MutableLiveData<List<String>> = MutableLiveData()
-    private val timePeriodFilters: MutableLiveData<List<String>> = MutableLiveData()
-    private val activeDistanceFilter: MutableLiveData<String> = MutableLiveData()
-    private val activeTimePeriodFilter: MutableLiveData<String> = MutableLiveData()
 
     private val myCompanies: MutableLiveData<List<MyCompaniesDisplayModel>> =
         MutableLiveData<List<MyCompaniesDisplayModel>>()
 
     fun getCompanies(): LiveData<List<MyCompaniesDisplayModel>> {
         return myCompanies
-    }
-
-    fun getDistanceFilters(): LiveData<List<String>> {
-        return distanceFilters
-    }
-
-    fun getTimePeriodFilters(): LiveData<List<String>> {
-        return timePeriodFilters
-    }
-
-    fun getActiveDistanceFilter(): LiveData<String> {
-        return activeDistanceFilter
-    }
-
-    fun getActiveTimePeriodFilter(): LiveData<String> {
-        return activeTimePeriodFilter
     }
 
 

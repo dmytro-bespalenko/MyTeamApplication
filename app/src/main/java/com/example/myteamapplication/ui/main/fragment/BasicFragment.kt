@@ -1,27 +1,22 @@
 package com.example.myteamapplication.ui.main.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesFactory
 
-abstract class BasicFragment : Fragment() {
+abstract class BasicFragment<VM : AndroidViewModel> : Fragment() {
 
+    val viewModel: VM by lazy {
+        val factory =
+            MyCompaniesFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+        ViewModelProvider(this, factory).get(getViewModel())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    abstract fun getViewModel(): Class<VM>
+
 
 }

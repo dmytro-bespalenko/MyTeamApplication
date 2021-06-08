@@ -2,8 +2,6 @@ package com.example.myteamapplication.ui.myteam.viewmodel
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
@@ -21,29 +19,6 @@ class MyTeamViewModel(
 ) : BasicViewModel(instance) {
 
     override var api: RestApi = instance.api
-
-    private val distanceFilters: MutableLiveData<List<String>> = MutableLiveData()
-    private val timePeriodFilters: MutableLiveData<List<String>> = MutableLiveData()
-    private val activeDistanceFilter: MutableLiveData<String> = MutableLiveData()
-    private val activeTimePeriodFilter: MutableLiveData<String> = MutableLiveData()
-
-
-    fun getDistanceFilters(): LiveData<List<String>> {
-        return distanceFilters
-    }
-
-    fun getTimePeriodFilters(): LiveData<List<String>> {
-        return timePeriodFilters
-    }
-
-    fun getActiveDistanceFilter(): LiveData<String> {
-        return activeDistanceFilter
-    }
-
-    fun getActiveTimePeriodFilter(): LiveData<String> {
-        return activeTimePeriodFilter
-    }
-
 
 
     fun updateDistanceFilters() {

@@ -22,15 +22,15 @@ interface DistanceDao {
     fun loadDistanceFilters(): List<String>
 
     @Query("SELECT filtersPeriod FROM entitydistancefilter")
-    fun loadTimePeriodFilters(): Single<List<String>>
+    fun loadTimePeriodFilters(): List<String>
 
 
     @Query("SELECT activeDistance FROM entitydistancefilter")
-    fun loadActiveDistance(): Single<String>
+    fun loadActiveDistance(): String
 
 
     @Query("SELECT activePeriod FROM entitydistancefilter")
-    fun loadActivePeriod(): Single<String>
+    fun loadActivePeriod(): String
 
     @Query("UPDATE entitydistancefilter SET activeDistance=:step WHERE id = 1")
     fun updateActiveDistanceFilter(step: String?)

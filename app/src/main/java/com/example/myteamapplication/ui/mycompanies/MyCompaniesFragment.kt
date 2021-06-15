@@ -20,20 +20,23 @@ import com.example.myteamapplication.ui.mycompanies.adapter.RecyclerAdapterData
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
+@Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
     MyCompaniesRecyclerAdapter.OnItemClickListener {
 
     override fun getViewModel(): Class<MyCompaniesViewModel> = MyCompaniesViewModel::class.java
+
     private var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
     private var distanceFilterList: ArrayList<String> = ArrayList()
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
-    var activeDistanceFilter: MutableList<String> = mutableListOf()
-    var activeTimePeriodFilter: MutableList<String> = mutableListOf()
+    private var activeDistanceFilter: MutableList<String> = mutableListOf()
+    private var activeTimePeriodFilter: MutableList<String> = mutableListOf()
 
     private val REQUEST_DISTANCE_DIALOG = 0
     private val REQUEST_TIME_PERIOD_DIALOG = 1
 
+    
 
     private var recyclerAdapter =
         MyCompaniesRecyclerAdapter(
@@ -125,13 +128,12 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
     }
 
     companion object {
-
         fun newSelectDistanceDialogFragmentInstance(
             fragment: Fragment,
             filters: List<String>
         ): SelectDistanceDialogFragment {
             val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters));
+            args.putStringArrayList("list", ArrayList(filters))
             val fragmentSD = SelectDistanceDialogFragment()
             fragmentSD.arguments = args
             fragmentSD.setTargetFragment(fragment, 0)
@@ -143,7 +145,7 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
             filters: List<String>,
         ): SelectTimePeriodDialogFragment {
             val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters));
+            args.putStringArrayList("list", ArrayList(filters))
             val fragmentTP = SelectTimePeriodDialogFragment()
             fragmentTP.arguments = args
             fragmentTP.setTargetFragment(fragment, 1)

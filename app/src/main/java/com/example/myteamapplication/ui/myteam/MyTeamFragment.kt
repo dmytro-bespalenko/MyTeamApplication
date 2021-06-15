@@ -9,18 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.customview.SelectDistanceDialogFragment
 import com.example.myteamapplication.ui.customview.SelectTimePeriodDialogFragment
 import com.example.myteamapplication.ui.main.fragment.BasicFragment
 import com.example.myteamapplication.ui.myteam.adapter.MyTeamAdapterData
 import com.example.myteamapplication.ui.myteam.adapter.MyTeamRecyclerAdapter
-import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamFactory
 import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamViewModel
 
 
@@ -40,17 +36,6 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
     var recyclerAdapter = MyTeamRecyclerAdapter(
         MyTeamAdapterData(activeDistanceFilter, activeTimePeriodFilter), this
     )
-
-//    private lateinit var myTeamViewModel: MyTeamViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        myTeamViewModel = ViewModelProvider(
-//            requireActivity(),
-//            MyTeamFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
-//        ).get(MyTeamViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

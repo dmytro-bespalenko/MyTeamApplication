@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.ui.customview.CustomFilterView
 
-class MyCompaniesRecyclerAdapter(
+data class MyCompaniesRecyclerAdapter(
     private val recyclerAdapterData: RecyclerAdapterData,
     private val listener: OnItemClickListener
 
@@ -34,20 +34,20 @@ class MyCompaniesRecyclerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-            if (holder.itemViewType == 0) {
-                val holderZero = holder as ViewHolderZeroPosition
-                holderZero.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
-                holderZero.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
+        if (holder.itemViewType == 0) {
+            val holderZero = holder as ViewHolderZeroPosition
+            holderZero.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
+            holderZero.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
 
-            } else {
-                val mutableHolder: ViewHolder = holder as ViewHolder
-                mutableHolder.myCompaniesId?.text =
-                    recyclerAdapterData.myCompaniesDisplayModel[position - 1].rank.toString()
-                mutableHolder.myCompanyName?.text =
-                    recyclerAdapterData.myCompaniesDisplayModel[position].displayName
-                mutableHolder.myCompanySteps?.text =
-                    recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
-            }
+        } else {
+            val mutableHolder: ViewHolder = holder as ViewHolder
+            mutableHolder.myCompaniesId?.text =
+                recyclerAdapterData.myCompaniesDisplayModel[position - 1].rank.toString()
+            mutableHolder.myCompanyName?.text =
+                recyclerAdapterData.myCompaniesDisplayModel[position].displayName
+            mutableHolder.myCompanySteps?.text =
+                recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
+        }
 
     }
 
@@ -69,6 +69,7 @@ class MyCompaniesRecyclerAdapter(
 
         var step: CustomFilterView = itemView.findViewById(R.id.step)
         var time: CustomFilterView = itemView.findViewById(R.id.time)
+
 
         init {
             step.setOnClickListener { listener.onItemDistanceClick() }

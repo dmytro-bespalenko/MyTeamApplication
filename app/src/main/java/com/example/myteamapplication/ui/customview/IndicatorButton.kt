@@ -1,15 +1,10 @@
 package com.example.myteamapplication.ui.customview
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.Checkable
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout

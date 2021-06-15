@@ -52,10 +52,7 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         radioGroup = view.findViewById(R.id.indicator_radio_group)
-
         val splitStrings: ArrayList<String> = separateString(timePeriodAllFilters)
-
-
 
         for (str in splitStrings) {
             when (str) {

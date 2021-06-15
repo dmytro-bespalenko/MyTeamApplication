@@ -7,6 +7,9 @@ import com.example.myteamapplication.room.dao.DistanceDao
 import com.example.myteamapplication.room.entity.EntityDistanceFilter
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 class RoomDistanceFilterRepository(application: Application) : DistanceFilterRepository {
@@ -29,6 +32,10 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
         val database: FilterDatabase = FilterDatabase.getInstance(application.applicationContext)
         distanceDao = database.filterDao
 
+        GlobalScope.launch {
+
+
+        }
         Executors.newSingleThreadExecutor().execute {
             if (distanceDao.selectAllUsers().isEmpty()) {
                 distanceDao.insertAllFilters(
@@ -45,14 +52,15 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
 
         }
 
+
     }
 
-    override fun getActiveDistance(): Single<String> {
+    override suspend fun getActiveDistance(): String {
 
         return distanceDao.loadActiveDistance()
     }
 
-    override fun getTimePeriodFilters(): Single<List<String>> {
+    override suspend fun getTimePeriodFilters(): List<String> {
 
         return distanceDao.loadTimePeriodFilters()
     }
@@ -61,23 +69,19 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
         return distanceDao.loadDistanceFilters()
     }
 
-    override fun getActivePeriod(): Single<String> {
+    override suspend fun getActivePeriod(): String {
 
         return distanceDao.loadActivePeriod()
     }
 
-    override fun updateActiveDistance(step: String?) {
-        Executors.newSingleThreadExecutor().execute {
-            distanceDao.updateActiveDistanceFilter(step)
-        }
-
+    override suspend fun updateActiveDistance(step: String?) {
+        distanceDao.updateActiveDistanceFilter(step)
     }
 
-    fun updateActiveTimePeriod(time: String) {
+    override suspend fun updateActiveTimePeriod(time: String) {
 
-        Executors.newSingleThreadExecutor().execute {
-            distanceDao.updateActiveTimePeriodFilter(time)
-        }
+        distanceDao.updateActiveTimePeriodFilter(time)
+
 
     }
 }

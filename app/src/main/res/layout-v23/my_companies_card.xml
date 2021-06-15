@@ -77,7 +77,7 @@
                 android:layout_height="7dp"
                 android:foreground="@color/teal_200"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/my_company_distance"
                 app:layout_constraintHorizontal_bias="0.719"
                 app:layout_constraintStart_toEndOf="@+id/my_company_name_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/my_company_distance"

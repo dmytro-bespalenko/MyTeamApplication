@@ -1,14 +1,15 @@
-package com.example.myteamapplication.ui.mycompanies.veiwmodel
+package com.example.myteamapplication.ui.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.allteams.viewmodel.AllTeamsViewModel
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamViewModel
 
 @Suppress("UNCHECKED_CAST")
-class MyCompaniesFactory(private val repository: RoomDistanceFilterRepository) :
+class BasicFactory(private val repository: RoomDistanceFilterRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

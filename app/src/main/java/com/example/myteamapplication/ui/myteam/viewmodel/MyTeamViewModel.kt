@@ -9,6 +9,7 @@ import com.example.myteamapplication.room.repositories.RoomDistanceFilterReposit
 import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,53 +23,47 @@ class MyTeamViewModel(
 
 
     fun updateDistanceFilters() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = distanceFilterRepository.getDistanceFilters()
-                    distanceFilters.postValue(response)
-                } catch (exception: Exception) {
-                    Log.d("TAG", "updateDistanceFilters: $exception")
-                }
-            }
+
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            val response = async { distanceFilterRepository.getDistanceFilters() }
+            distanceFilters.postValue(response.await())
+        }
+    }
+
+    fun updateActiveDistanceFilter() {
+
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            activeDistanceFilter.postValue(distanceFilterRepository.getActiveDistance())
         }
 
     }
 
-    fun updateActiveDistanceFilter() {
-        distanceFilterRepository.getActiveDistance()
-            .subscribeOn(Schedulers.io())
-            .subscribe({ ad -> activeDistanceFilter.postValue(ad) },
-                { t -> Log.d("TAG", "updateActiveDistanceFilter: $t") }
-            )
-    }
-
     fun updateActiveTimePeriodFilter() {
-        distanceFilterRepository.getActivePeriod()
-            .subscribeOn(Schedulers.io())
-            .subscribe({ ad -> activeTimePeriodFilter.postValue(ad) },
-                { t -> Log.d("TAG", "updateActiveTimePeriodFilter: $t") }
-            )
 
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            activeTimePeriodFilter.postValue(distanceFilterRepository.getActivePeriod())
+        }
     }
 
 
     fun updateTimePeriodFilters() {
-        distanceFilterRepository.getTimePeriodFilters()
-            .subscribeOn(Schedulers.io())
-            .subscribe({ ad -> timePeriodFilters.postValue(ad) },
-                { t -> Log.d("TAG", "updateTimePeriodFilters: $t") }
-            )
+
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            timePeriodFilters.postValue(distanceFilterRepository.getTimePeriodFilters())
+        }
     }
 
     fun setActiveDistanceFilter(step: String?) {
-        distanceFilterRepository.updateActiveDistance(step)
 
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            distanceFilterRepository.updateActiveDistance(step)
+        }
     }
 
     fun setActiveTimePeriodFilter(time: String) {
-        distanceFilterRepository.updateActiveTimePeriod(time)
+
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            distanceFilterRepository.updateActiveTimePeriod(time)
+        }
     }
-
-
 }

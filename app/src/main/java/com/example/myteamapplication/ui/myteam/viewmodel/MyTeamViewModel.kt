@@ -1,17 +1,14 @@
 package com.example.myteamapplication.ui.myteam.viewmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @SuppressLint("CheckResult")
 class MyTeamViewModel(

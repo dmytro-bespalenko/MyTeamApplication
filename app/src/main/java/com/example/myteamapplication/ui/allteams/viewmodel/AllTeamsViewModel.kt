@@ -1,19 +1,19 @@
 package com.example.myteamapplication.ui.allteams.viewmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.myteamapplication.ui.main.viewmodel.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @SuppressLint("CheckResult")
 
 class AllTeamsViewModel(
     instance: TeamApplication
-) : BasicViewModel(instance) {
+) : BaseViewModel(instance) {
 
     private val allTeams: MutableLiveData<List<AllTeamsDisplayModel>> =
         MutableLiveData<List<AllTeamsDisplayModel>>()
@@ -23,22 +23,22 @@ class AllTeamsViewModel(
     }
 
     fun updateAllTeams() {
-        api.getAllTeams()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { all ->
-                    allTeams.postValue(all.results?.map { it ->
-                        AllTeamsDisplayModel(
-                            it.average,
-                            it.averageDouble,
-                            it.displayName,
-                            it.rank,
-                            it.teamId
-                        )
-                    })
-                },
-                { t -> Log.d("TAG", "updateAllTeams: +$t") })
+        val list: MutableList<AllTeamsDisplayModel> = mutableListOf()
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            api.getAllTeams().results?.forEach {
+                list.add(
+                    AllTeamsDisplayModel(
+                        it.average,
+                        it.averageDouble,
+                        it.displayName,
+                        it.rank,
+                        it.teamId
+                    )
+                )
+            }
+            allTeams.postValue(list)
+        }
+
 
     }
 

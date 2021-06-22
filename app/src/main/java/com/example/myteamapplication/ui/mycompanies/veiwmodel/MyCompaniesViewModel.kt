@@ -1,16 +1,12 @@
 package com.example.myteamapplication.ui.mycompanies.veiwmodel
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
-import com.example.myteamapplication.network.RestApi
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
-import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.myteamapplication.ui.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,9 +14,7 @@ import kotlinx.coroutines.launch
 class MyCompaniesViewModel(
     instance: TeamApplication, private
     var distanceFilterRepository: RoomDistanceFilterRepository
-) : BasicViewModel(instance) {
-
-    override var api: RestApi = instance.api
+) : BaseViewModel(instance) {
 
 
     private val myCompanies: MutableLiveData<List<MyCompaniesDisplayModel>> =
@@ -30,32 +24,27 @@ class MyCompaniesViewModel(
         return myCompanies
     }
 
-
     fun updateCompanies() {
-        api.getMyCompany()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { all ->
-                    myCompanies.postValue(all.results.map {
-                        MyCompaniesDisplayModel(
-                            it.avatar,
-                            it.average,
-                            it.averageDouble,
-                            it.displayName,
-                            it.rank,
-                            it.total,
-                            it.totalDouble,
-                            it.userId
-                        )
-                    })
-                },
-                { t -> Log.d("TAG", "updateCompanies: $t") }
-            )
-
+        val list: MutableList<MyCompaniesDisplayModel> = mutableListOf()
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            api.getMyCompany().results.forEach {
+                list.add(
+                    MyCompaniesDisplayModel(
+                        it.avatar,
+                        it.average,
+                        it.averageDouble,
+                        it.displayName,
+                        it.rank,
+                        it.total,
+                        it.totalDouble,
+                        it.userId
+                    )
+                )
+            }
+            myCompanies.postValue(list)
+        }
 
     }
-
 
     fun updateDistanceFilters() {
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
@@ -66,7 +55,6 @@ class MyCompaniesViewModel(
     }
 
     fun updateTimePeriodFilters() {
-
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
             timePeriodFilters.postValue(distanceFilterRepository.getTimePeriodFilters())
         }

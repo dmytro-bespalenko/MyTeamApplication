@@ -8,7 +8,7 @@ import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-open class BasicViewModel(app: TeamApplication) : AndroidViewModel(app) {
+open class BaseViewModel(app: TeamApplication) : AndroidViewModel(app) {
 
     open var api: RestApi = app.api
 

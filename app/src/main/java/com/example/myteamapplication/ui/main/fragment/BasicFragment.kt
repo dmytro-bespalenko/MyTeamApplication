@@ -5,13 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
-import com.example.myteamapplication.ui.main.viewmodel.BasicFactory
+import com.example.myteamapplication.ui.main.viewmodel.BaseFactory
 
 abstract class BasicFragment<VM : AndroidViewModel> : Fragment() {
 
     val viewModel: VM by lazy {
         val factory =
-            BasicFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
+            BaseFactory(RoomDistanceFilterRepository.getInstance(TeamApplication.instance))
 
         ViewModelProvider(this, factory).get(getViewModel())
     }

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
-import com.example.myteamapplication.ui.main.viewmodel.BasicViewModel
+import com.example.myteamapplication.ui.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class MyTeamViewModel(
     instance: TeamApplication,
     var distanceFilterRepository: RoomDistanceFilterRepository
-) : BasicViewModel(instance) {
+) : BaseViewModel(instance) {
 
     override var api: RestApi = instance.api
 

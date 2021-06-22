@@ -164,7 +164,6 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
 
     }
 
-
     override fun onItemTimeFrameClick() {
         fragmentManager?.let {
             newSelectTimePeriodDialogFragmentInstance(this, timePeriodFiltersList)

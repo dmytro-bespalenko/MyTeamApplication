@@ -2,40 +2,38 @@ package com.example.myteamapplication.room.dao
 
 import androidx.room.*
 import com.example.myteamapplication.room.entity.EntityDistanceFilter
-import io.reactivex.Completable
-import io.reactivex.Single
 
 
 @Dao
 interface DistanceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllFilters(entityDistanceFilter: EntityDistanceFilter): Completable
+    suspend fun insertAllFilters(entityDistanceFilter: EntityDistanceFilter)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateAllFilters(entityDistanceFilter: EntityDistanceFilter): Completable
+    suspend fun updateAllFilters(entityDistanceFilter: EntityDistanceFilter)
 
     @Query("SELECT * FROM entitydistancefilter")
-    fun selectAllUsers(): List<EntityDistanceFilter>
+    suspend fun selectAllUsers(): List<EntityDistanceFilter>
 
     @Query("SELECT filtersDistance FROM entitydistancefilter")
-    fun loadDistanceFilters(): List<String>
+    suspend fun loadDistanceFilters(): List<String>
 
     @Query("SELECT filtersPeriod FROM entitydistancefilter")
-    fun loadTimePeriodFilters(): List<String>
+    suspend fun loadTimePeriodFilters(): List<String>
 
 
     @Query("SELECT activeDistance FROM entitydistancefilter")
-    fun loadActiveDistance(): String
+    suspend fun loadActiveDistance(): String
 
 
     @Query("SELECT activePeriod FROM entitydistancefilter")
-    fun loadActivePeriod(): String
+    suspend fun loadActivePeriod(): String
 
     @Query("UPDATE entitydistancefilter SET activeDistance=:step WHERE id = 1")
-    fun updateActiveDistanceFilter(step: String?)
+    suspend fun updateActiveDistanceFilter(step: String?)
 
 
     @Query("UPDATE entitydistancefilter SET activePeriod=:time WHERE id = 1")
-    fun updateActiveTimePeriodFilter(time: String)
+    suspend fun updateActiveTimePeriodFilter(time: String)
 }

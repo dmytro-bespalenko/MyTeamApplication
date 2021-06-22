@@ -9,7 +9,7 @@ import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewMod
 import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamViewModel
 
 @Suppress("UNCHECKED_CAST")
-class BasicFactory(private val repository: RoomDistanceFilterRepository) :
+class BaseFactory(private val repository: RoomDistanceFilterRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

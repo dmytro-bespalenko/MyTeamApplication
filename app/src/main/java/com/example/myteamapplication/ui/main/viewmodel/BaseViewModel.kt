@@ -6,20 +6,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myteamapplication.TeamApplication
 import com.example.myteamapplication.network.RestApi
+import com.example.myteamapplication.network.models.allteams.UserTeamResult
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 open class BaseViewModel(app: TeamApplication) : AndroidViewModel(app) {
 
     open var api: RestApi = app.api
 
+    val rankTeam: MutableLiveData<UserTeamResult> = MutableLiveData()
     val distanceFilters: MutableLiveData<List<String>> = MutableLiveData()
     val timePeriodFilters: MutableLiveData<List<String>> = MutableLiveData()
     val activeDistanceFilter: MutableLiveData<String> = MutableLiveData()
     val activeTimePeriodFilter: MutableLiveData<String> = MutableLiveData()
 
 
-    val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.d("TAG", ": $throwable")
+
     }
 
     fun getDistanceFilters(): LiveData<List<String>> {
@@ -36,6 +39,11 @@ open class BaseViewModel(app: TeamApplication) : AndroidViewModel(app) {
 
     fun getActiveTimePeriodFilter(): LiveData<String> {
         return activeTimePeriodFilter
+    }
+
+    fun getRankTeam(): LiveData<UserTeamResult> {
+
+        return  rankTeam
     }
 
 }

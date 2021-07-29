@@ -1,23 +1,25 @@
 package com.example.myteamapplication.ui.mycompanies.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.ui.customview.CustomFilterView
 
+private var TYPE_ITEM_ZERO = 0
+private var TYPE_ITEM_OTHER = 1
+
 data class MyCompaniesRecyclerAdapter(
     private val recyclerAdapterData: RecyclerAdapterData,
     private val listener: OnItemClickListener
-
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 
 ) {
-
-    private var TYPE_ITEM_ZERO = 0
-    private var TYPE_ITEM_OTHER = 1
+//    private var selectedPos = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -41,12 +43,30 @@ data class MyCompaniesRecyclerAdapter(
 
         } else {
             val mutableHolder: ViewHolder = holder as ViewHolder
+
+            if (recyclerAdapterData.rankCompany[0].userId == recyclerAdapterData.myCompaniesDisplayModel[position - 1].userId) {
+                mutableHolder.myCompanyLayout?.setBackgroundResource(R.color.Aquamarine)
+            } else {
+                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.WHITE);
+            }
+
             mutableHolder.myCompaniesId?.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position - 1].rank.toString()
             mutableHolder.myCompanyName?.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position].displayName
             mutableHolder.myCompanySteps?.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
+
+//            mutableHolder.myCompanyLayout?.setOnClickListener {
+//                selectedPos = position
+//                notifyDataSetChanged()
+//            }
+//            if (selectedPos == position) {
+//                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.MAGENTA);
+//            } else {
+//                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.WHITE);
+//            }
+
         }
 
     }
@@ -93,12 +113,15 @@ data class MyCompaniesRecyclerAdapter(
         var myCompaniesId: TextView? = null
         var myCompanyName: TextView? = null
         var myCompanySteps: TextView? = null
+        var myCompanyLayout: CardView? = null
 
         init {
             myCompaniesId = itemView.findViewById(R.id.my_company_id)
             myCompanyName = itemView.findViewById(R.id.my_company_name)
             myCompanySteps = itemView.findViewById(R.id.my_company_distance)
+            myCompanyLayout = itemView.findViewById(R.id.cardView)
         }
+
 
     }
 

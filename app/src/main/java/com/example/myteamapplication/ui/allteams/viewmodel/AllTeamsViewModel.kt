@@ -22,10 +22,20 @@ class AllTeamsViewModel(
         return allTeams
     }
 
+    fun updateRank() {
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            api.getAllTeams().userTeamResult.let {
+
+                rankTeam.postValue(it)
+            }
+        }
+
+    }
+
     fun updateAllTeams() {
         val list: MutableList<AllTeamsDisplayModel> = mutableListOf()
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
-            api.getAllTeams().results?.forEach {
+            api.getAllTeams().results.forEach {
                 list.add(
                     AllTeamsDisplayModel(
                         it.average,

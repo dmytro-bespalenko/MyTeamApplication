@@ -15,7 +15,7 @@ data class MyCompaniesModel(
     @SerializedName("results")
     var results: List<Result>,
     @SerializedName("userResult")
-    var userResult: Any
+    var userResult: Result
 )
 
 data class Result(
@@ -34,5 +34,6 @@ data class Result(
     @SerializedName("total_double")
     var totalDouble: Int,
     @SerializedName("userId")
-    var userId: String
+    var userId: String,
+
 )

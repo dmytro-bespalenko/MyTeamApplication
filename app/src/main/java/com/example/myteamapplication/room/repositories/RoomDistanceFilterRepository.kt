@@ -58,4 +58,6 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
     override suspend fun updateActiveTimePeriod(time: String) {
         distanceDao.updateActiveTimePeriodFilter(time)
     }
+
+
 }

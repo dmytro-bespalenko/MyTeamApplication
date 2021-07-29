@@ -1,9 +1,12 @@
 package com.example.myteamapplication
 
 import android.app.Application
+import com.example.myteamapplication.di.*
 import com.example.myteamapplication.network.NetworkManager
 import com.example.myteamapplication.network.RestApi
 import com.example.myteamapplication.room.FilterDatabase
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class TeamApplication : Application() {
 
@@ -28,7 +31,11 @@ class TeamApplication : Application() {
         api = NetworkManager.getRestApi()
 
         database = FilterDatabase.getInstance(instance)
+        startKoin {
+            androidContext(this@TeamApplication)
+            modules(listOf(viewModelModule, apiModule, netModule, databaseModule, coroutineModule))
 
+        }
 
     }
 

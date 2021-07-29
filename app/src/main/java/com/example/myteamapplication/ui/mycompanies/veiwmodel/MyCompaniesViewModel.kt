@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myteamapplication.TeamApplication
+import com.example.myteamapplication.network.models.mycompanies.Result
 import com.example.myteamapplication.room.repositories.RoomDistanceFilterRepository
 import com.example.myteamapplication.ui.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,8 +21,21 @@ class MyCompaniesViewModel(
     private val myCompanies: MutableLiveData<List<MyCompaniesDisplayModel>> =
         MutableLiveData<List<MyCompaniesDisplayModel>>()
 
+    val highLightCompany: MutableLiveData<Result> = MutableLiveData<Result>()
+
+
     fun getCompanies(): LiveData<List<MyCompaniesDisplayModel>> {
         return myCompanies
+    }
+
+
+    fun highLightRank() {
+        viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
+            api.getMyCompany().userResult.let {
+                highLightCompany.postValue(it)
+            }
+
+        }
     }
 
     fun updateCompanies() {
@@ -38,6 +52,7 @@ class MyCompaniesViewModel(
                         it.total,
                         it.totalDouble,
                         it.userId
+
                     )
                 )
             }
@@ -58,6 +73,8 @@ class MyCompaniesViewModel(
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
             timePeriodFilters.postValue(distanceFilterRepository.getTimePeriodFilters())
         }
+
+
     }
 
     fun updateActiveDistanceFilter() {

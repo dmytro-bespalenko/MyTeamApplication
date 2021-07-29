@@ -8,10 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
+import com.example.myteamapplication.network.models.mycompanies.Result
 import com.example.myteamapplication.ui.customview.SelectDistanceDialogFragment
 import com.example.myteamapplication.ui.customview.SelectTimePeriodDialogFragment
 import com.example.myteamapplication.ui.main.fragment.BasicFragment
@@ -20,6 +20,9 @@ import com.example.myteamapplication.ui.mycompanies.adapter.RecyclerAdapterData
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
+
+private const val REQUEST_DISTANCE_DIALOG = 0
+private const val REQUEST_TIME_PERIOD_DIALOG = 1
 @Suppress("DEPRECATION")
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
@@ -32,17 +35,10 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
     private var activeDistanceFilter: MutableList<String> = mutableListOf()
     private var activeTimePeriodFilter: MutableList<String> = mutableListOf()
+    private var rankCompany: MutableList<Result> = mutableListOf()
 
-    private val REQUEST_DISTANCE_DIALOG = 0
-    private val REQUEST_TIME_PERIOD_DIALOG = 1
-
-    
-
-    private var recyclerAdapter =
-        MyCompaniesRecyclerAdapter(
-            RecyclerAdapterData(myCompaniesList, activeDistanceFilter, activeTimePeriodFilter),
-            this
-        )
+    private lateinit var recyclerView: RecyclerView
+   private var recyclerAdapter: MyCompaniesRecyclerAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,9 +51,26 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_all_team)
+        recyclerAdapter =
+            MyCompaniesRecyclerAdapter(
+                RecyclerAdapterData(
+                    myCompaniesList,
+                    activeDistanceFilter,
+                    activeTimePeriodFilter,
+                    rankCompany
+                ),
+                this
+            )
+        recyclerView = view.findViewById(R.id.recyclerView_all_team)
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
+
+        viewModel.highLightCompany.observe(viewLifecycleOwner,
+            {
+                rankCompany.clear()
+                rankCompany.add(it)
+            }
+        )
 
         viewModel
             .getCompanies()
@@ -65,7 +78,7 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
                 { c ->
                     myCompaniesList.clear()
                     myCompaniesList.addAll(c)
-                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerAdapter!!.notifyDataSetChanged()
 
                 })
 
@@ -75,7 +88,7 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
                 { ad ->
                     activeDistanceFilter.clear()
                     activeDistanceFilter.add(ad)
-                    recyclerAdapter.notifyDataSetChanged()
+
                 }
             )
 
@@ -85,7 +98,6 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
                 { tp ->
                     activeTimePeriodFilter.clear()
                     activeTimePeriodFilter.add(tp)
-                    recyclerAdapter.notifyDataSetChanged()
                 }
             )
 
@@ -116,46 +128,21 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
                 REQUEST_DISTANCE_DIALOG -> {
                     activeDistanceFilter[0] = data?.getStringExtra("step").toString()
                     viewModel.setActiveDistanceFilter(activeDistanceFilter[0])
-                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerAdapter?.notifyDataSetChanged()
                 }
                 REQUEST_TIME_PERIOD_DIALOG -> {
                     activeTimePeriodFilter[0] = data?.getStringExtra("time").toString()
                     viewModel.setActiveTimePeriodFilter(activeTimePeriodFilter[0])
-                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerAdapter?.notifyDataSetChanged()
                 }
             }
         }
     }
 
-    companion object {
-        fun newSelectDistanceDialogFragmentInstance(
-            fragment: Fragment,
-            filters: List<String>
-        ): SelectDistanceDialogFragment {
-            val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters))
-            val fragmentSD = SelectDistanceDialogFragment()
-            fragmentSD.arguments = args
-            fragmentSD.setTargetFragment(fragment, 0)
-            return fragmentSD
-        }
-
-        fun newSelectTimePeriodDialogFragmentInstance(
-            fragment: Fragment,
-            filters: List<String>,
-        ): SelectTimePeriodDialogFragment {
-            val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters))
-            val fragmentTP = SelectTimePeriodDialogFragment()
-            fragmentTP.arguments = args
-            fragmentTP.setTargetFragment(fragment, 1)
-            return fragmentTP
-        }
-    }
 
     override fun onItemDistanceClick() {
         fragmentManager?.let {
-            newSelectDistanceDialogFragmentInstance(this, distanceFilterList)
+            SelectDistanceDialogFragment.newInstance(distanceFilterList)
                 .show(
                     it,
                     "MyCustomFragment"
@@ -166,7 +153,7 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
 
     override fun onItemTimeFrameClick() {
         fragmentManager?.let {
-            newSelectTimePeriodDialogFragmentInstance(this, timePeriodFiltersList)
+            SelectTimePeriodDialogFragment.newInstance(timePeriodFiltersList)
                 .show(
                     it,
                     "MyCustomFragment"
@@ -174,9 +161,11 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         viewModel.updateCompanies()
+        viewModel.highLightRank()
         viewModel.updateDistanceFilters()
         viewModel.updateTimePeriodFilters()
         viewModel.updateActiveDistanceFilter()

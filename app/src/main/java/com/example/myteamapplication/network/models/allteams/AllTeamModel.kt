@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 
 data class AllTeamModel(
     @SerializedName("metric")
-    var metric: String? = null,
+    var metric: String,
     @SerializedName("period")
-    var period: String? = null,
+    var period: String,
     @SerializedName("programId")
-    var programId: String? = null,
+    var programId: String,
     @SerializedName("programName")
-    var programName: String? = null,
+    var programName: String,
     @SerializedName("results")
-    var results: List<Result>? = null,
+    var results: List<Result>,
     @SerializedName("userTeamResult")
-    var userTeamResult: UserTeamResult? = null
+    var userTeamResult: UserTeamResult
 )
 
 

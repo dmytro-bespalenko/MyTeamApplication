@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
 
+const val ARG_TIME_LIST = "list"
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class SelectTimePeriodDialogFragment() : DialogFragment(),
@@ -149,6 +150,18 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
         customSelectFilterView.setOnClickListener(onClickListener)
 
         return customSelectFilterView
+    }
+
+    companion object {
+        fun newInstance(list: ArrayList<String>): SelectTimePeriodDialogFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_TIME_LIST, list)
+            }
+
+            return SelectTimePeriodDialogFragment().apply {
+                arguments = args
+            }
+        }
     }
 
 

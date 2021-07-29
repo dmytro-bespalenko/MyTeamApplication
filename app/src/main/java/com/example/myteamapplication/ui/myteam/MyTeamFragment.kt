@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
@@ -27,6 +26,7 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
     var activeTimePeriodFilter: MutableList<String> = mutableListOf()
     private var distanceFilterList: ArrayList<String> = ArrayList()
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
+
 
     private val REQUEST_DISTANCE_DIALOG = 0
     private val REQUEST_TIME_PERIOD_DIALOG = 1
@@ -51,6 +51,7 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_all_team)
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = recyclerAdapter
+
 
         viewModel
             .getActiveDistanceFilter()
@@ -111,39 +112,10 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
         }
     }
 
-    companion object {
-        fun newSelectDistanceDialogFragmentInstance(
-            fragment: Fragment,
-            filters: List<String>
-        ): SelectDistanceDialogFragment {
-            val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters));
-            val fragmentSD = SelectDistanceDialogFragment()
-            fragmentSD.arguments = args
-            fragmentSD.setTargetFragment(fragment, 0)
-            return fragmentSD
-        }
-
-        fun newSelectTimePeriodDialogFragmentInstance(
-            fragment: Fragment,
-            filters: List<String>,
-        ): SelectTimePeriodDialogFragment {
-            val args = Bundle()
-            args.putStringArrayList("list", ArrayList(filters));
-            val fragmentTP = SelectTimePeriodDialogFragment()
-            fragmentTP.arguments = args
-            fragmentTP.setTargetFragment(fragment, 1)
-            return fragmentTP
-        }
-
-    }
 
     override fun onItemDistanceClick() {
         fragmentManager?.let {
-            newSelectDistanceDialogFragmentInstance(
-                this,
-                distanceFilterList
-            )
+            SelectDistanceDialogFragment.newInstance(distanceFilterList)
                 .show(
                     it,
                     "MyCustomFragment"
@@ -154,8 +126,7 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
 
     override fun onItemTimeFrameClick() {
         fragmentManager?.let {
-            newSelectTimePeriodDialogFragmentInstance(
-                this,
+            SelectTimePeriodDialogFragment.newInstance(
                 timePeriodFiltersList
             )
                 .show(

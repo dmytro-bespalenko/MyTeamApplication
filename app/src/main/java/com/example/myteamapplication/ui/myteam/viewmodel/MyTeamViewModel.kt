@@ -43,6 +43,8 @@ class MyTeamViewModel(
     }
 
 
+
+
     fun updateTimePeriodFilters() {
 
         viewModelScope.launch(exceptionHandler + Dispatchers.IO) {
@@ -63,4 +65,6 @@ class MyTeamViewModel(
             distanceFilterRepository.updateActiveTimePeriod(time)
         }
     }
+
+
 }

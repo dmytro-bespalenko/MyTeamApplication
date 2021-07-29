@@ -50,6 +50,7 @@ class MyTeamRecyclerAdapter(
         init {
             step.setOnClickListener { listener.onItemDistanceClick() }
             time.setOnClickListener { listener.onItemTimeFrameClick() }
+
         }
 
 

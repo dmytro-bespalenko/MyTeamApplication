@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
 
+const val ARG_DISTANCE_LIST = "list"
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
@@ -116,6 +117,19 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
         customSelectFilterView.setOnClickListener(onClickListener)
 
         return customSelectFilterView
+    }
+
+    companion object {
+        fun newInstance(list: ArrayList<String>): SelectDistanceDialogFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_DISTANCE_LIST, list)
+            }
+
+            return SelectDistanceDialogFragment().apply {
+                arguments = args
+            }
+        }
+
     }
 
 

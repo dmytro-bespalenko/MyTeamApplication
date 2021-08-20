@@ -22,10 +22,8 @@ interface DistanceDao {
     @Query("SELECT filtersPeriod FROM entitydistancefilter")
     suspend fun loadTimePeriodFilters(): List<String>
 
-
     @Query("SELECT activeDistance FROM entitydistancefilter")
     suspend fun loadActiveDistance(): String
-
 
     @Query("SELECT activePeriod FROM entitydistancefilter")
     suspend fun loadActivePeriod(): String

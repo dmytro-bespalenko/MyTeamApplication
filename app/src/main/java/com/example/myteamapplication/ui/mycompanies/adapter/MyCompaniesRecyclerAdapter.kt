@@ -2,15 +2,13 @@ package com.example.myteamapplication.ui.mycompanies.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
-import com.example.myteamapplication.ui.customview.CustomFilterView
+import com.example.myteamapplication.databinding.AdapterFilterBinding
+import com.example.myteamapplication.databinding.MyCompaniesCardBinding
 
-private var TYPE_ITEM_ZERO = 0
+private var TYPE_ITEM_FIRST = 0
 private var TYPE_ITEM_OTHER = 1
 
 data class MyCompaniesRecyclerAdapter(
@@ -19,53 +17,51 @@ data class MyCompaniesRecyclerAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 
 ) {
-//    private var selectedPos = -1
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
+        val bindingFilter = AdapterFilterBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+        val bindingMyCompanies = MyCompaniesCardBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+
         return when (viewType) {
-            TYPE_ITEM_ZERO -> ViewHolderZeroPosition(
-                LayoutInflater.from(parent.context).inflate(R.layout.adapter_filter, parent, false)
-            )
-            else -> ViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.my_companies_card, parent, false)
-            )
+            TYPE_ITEM_FIRST ->
+                ViewHolderFirstPosition(bindingFilter)
+
+            else -> ViewHolder(bindingMyCompanies)
         }
     }
 
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        if (holder.itemViewType == 0) {
-            val holderZero = holder as ViewHolderZeroPosition
-            holderZero.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
-            holderZero.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
+        if (holder.itemViewType == TYPE_ITEM_FIRST) {
+            val holderZero = holder as ViewHolderFirstPosition
+
+            holderZero.binding.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
+            holderZero.binding.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
+
 
         } else {
             val mutableHolder: ViewHolder = holder as ViewHolder
 
-            if (recyclerAdapterData.rankCompany[0].userId == recyclerAdapterData.myCompaniesDisplayModel[position - 1].userId) {
-                mutableHolder.myCompanyLayout?.setBackgroundResource(R.color.Aquamarine)
+            if (recyclerAdapterData.positionItem.isNotEmpty() && recyclerAdapterData.positionItem[0] == position
+            ) {
+                mutableHolder.binding.companyLayout.setBackgroundResource(R.color.Aquamarine)
             } else {
-                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.WHITE);
+                mutableHolder.binding.companyLayout.setBackgroundColor(Color.WHITE);
             }
 
-            mutableHolder.myCompaniesId?.text =
+            mutableHolder.binding.myCompanyId.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position - 1].rank.toString()
-            mutableHolder.myCompanyName?.text =
+            mutableHolder.binding.myCompanyName.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position].displayName
-            mutableHolder.myCompanySteps?.text =
+            mutableHolder.binding.myCompanyDistance.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
-
-//            mutableHolder.myCompanyLayout?.setOnClickListener {
-//                selectedPos = position
-//                notifyDataSetChanged()
-//            }
-//            if (selectedPos == position) {
-//                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.MAGENTA);
-//            } else {
-//                mutableHolder.myCompanyLayout?.setBackgroundColor(Color.WHITE);
-//            }
 
         }
 
@@ -73,7 +69,7 @@ data class MyCompaniesRecyclerAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) {
-            TYPE_ITEM_ZERO
+            TYPE_ITEM_FIRST
         } else {
             TYPE_ITEM_OTHER
         }
@@ -84,51 +80,23 @@ data class MyCompaniesRecyclerAdapter(
         return recyclerAdapterData.myCompaniesDisplayModel.size
     }
 
-    inner class ViewHolderZeroPosition(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
-
-        var step: CustomFilterView = itemView.findViewById(R.id.step)
-        var time: CustomFilterView = itemView.findViewById(R.id.time)
+    inner class ViewHolderFirstPosition(val binding: AdapterFilterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
 
         init {
-            step.setOnClickListener { listener.onItemDistanceClick() }
-            time.setOnClickListener { listener.onItemTimeFrameClick() }
+            binding.step.setOnClickListener { listener.onItemDistanceClick() }
+            binding.time.setOnClickListener { listener.onItemTimeFrameClick() }
         }
 
-
-        override fun onClick(v: View?) {
-
-            when (itemView) {
-                step -> listener.onItemDistanceClick()
-                time -> listener.onItemTimeFrameClick()
-            }
-
-        }
     }
 
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var myCompaniesId: TextView? = null
-        var myCompanyName: TextView? = null
-        var myCompanySteps: TextView? = null
-        var myCompanyLayout: CardView? = null
-
-        init {
-            myCompaniesId = itemView.findViewById(R.id.my_company_id)
-            myCompanyName = itemView.findViewById(R.id.my_company_name)
-            myCompanySteps = itemView.findViewById(R.id.my_company_distance)
-            myCompanyLayout = itemView.findViewById(R.id.cardView)
-        }
-
-
-    }
+    inner class ViewHolder(val binding: MyCompaniesCardBinding) :
+        RecyclerView.ViewHolder(binding.root) {}
 
     interface OnItemClickListener {
         fun onItemDistanceClick()
         fun onItemTimeFrameClick()
-
     }
 }
 

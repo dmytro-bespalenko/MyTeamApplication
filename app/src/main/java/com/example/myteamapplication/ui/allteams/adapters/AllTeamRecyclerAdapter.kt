@@ -3,67 +3,100 @@ package com.example.myteamapplication.ui.allteams.adapters
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
+import com.example.myteamapplication.databinding.AdapterFilterBinding
+import com.example.myteamapplication.databinding.AllTeamsCardBinding
 
-class AllTeamRecyclerAdapter(private val recyclerAdapterData: RecyclerAdapterData) :
+@SuppressLint("SetTextI18n")
 
-    RecyclerView.Adapter<AllTeamRecyclerAdapter.MyViewHolder>() {
+private var TYPE_ITEM_FIRST = 0
+private var TYPE_ITEM_OTHER = 1
+
+class AllTeamRecyclerAdapter(
+    private val recyclerAdapterData: RecyclerAdapterData,
+    private val listener: OnItemClickListener
+) :
+
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.all_teams_card, parent, false)
+        val bindingFilter = AdapterFilterBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MyViewHolder(itemView)
+        val bindingAllTeams = AllTeamsCardBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return when (viewType) {
+            TYPE_ITEM_FIRST ->
+                MyViewHolderFirstPosition(bindingFilter)
+            else -> {
+                MyViewHolder(bindingAllTeams)
+            }
+
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.numberAllTeam?.text = recyclerAdapterData.allTeamsList[position].rank.toString()
-        holder.cityAllTeam?.text = recyclerAdapterData.allTeamsList[position].displayName
-
-        if (recyclerAdapterData.allTeamsList[position].average != 0) {
-            holder.activityAllTeam?.text =
-                recyclerAdapterData.allTeamsList[position].average.toString()
-        } else {
-            holder.activityAllTeam?.text = "no activity"
-        }
-
-        if (recyclerAdapterData.rank[0].teamId == recyclerAdapterData.allTeamsList[position].teamId) {
-            holder.cardView?.setBackgroundResource(R.color.Aquamarine)
+        if (holder.itemViewType == TYPE_ITEM_FIRST) {
+            val myViewHolderFirstPosition = holder as MyViewHolderFirstPosition
+            myViewHolderFirstPosition.binding.step.setTextView(recyclerAdapterData.activeDistanceFilter[0])
+            myViewHolderFirstPosition.binding.time.setTextView(recyclerAdapterData.activeTimePeriodFilter[0])
 
         } else {
-            holder.cardView?.setBackgroundColor(Color.WHITE)
+            val myViewHolder = holder as MyViewHolder
+            myViewHolder.binding.numberAllTeamTextView.text =
+                recyclerAdapterData.allTeamsList[position - 1].rank.toString()
+            myViewHolder.binding.cityAllTeamTextView.text =
+                recyclerAdapterData.allTeamsList[position].displayName
+
+            if (recyclerAdapterData.allTeamsList[position].average != 0) {
+                myViewHolder.binding.activityAllTeamTextView.text =
+                    recyclerAdapterData.allTeamsList[position].average.toString()
+            } else {
+                myViewHolder.binding.activityAllTeamTextView.text = "no activity"
+            }
+
+            if (recyclerAdapterData.positionItem.isNotEmpty() && position == recyclerAdapterData.positionItem[0]) {
+                myViewHolder.binding.cardViewAllTeams.setBackgroundResource(R.color.Aquamarine)
+            } else {
+                myViewHolder.binding.cardViewAllTeams.setBackgroundColor(Color.WHITE)
+            }
         }
+
     }
 
     override fun getItemCount(): Int {
-
         return recyclerAdapterData.allTeamsList.size
     }
 
-
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var numberAllTeam: TextView? = null
-        var cityAllTeam: TextView? = null
-        var activityAllTeam: TextView? = null
-        var cardView: CardView? = null
-
-
-        init {
-            numberAllTeam = itemView.findViewById(R.id.number_all_team_textView)
-            cityAllTeam = itemView.findViewById(R.id.city_all_team_textView)
-            activityAllTeam = itemView.findViewById(R.id.activity_all_team_textView)
-            cardView = itemView.findViewById(R.id.cardView_all_teams)
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            TYPE_ITEM_FIRST
+        } else {
+            TYPE_ITEM_OTHER
         }
     }
 
+    inner class MyViewHolderFirstPosition(val binding: AdapterFilterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.step.setOnClickListener { listener.onItemDistanceClick() }
+            binding.time.setOnClickListener { listener.onItemTimeFrameClick() }
+        }
+
+    }
+
+    inner class MyViewHolder(val binding: AllTeamsCardBinding) :
+        RecyclerView.ViewHolder(binding.root) {}
+
+    interface OnItemClickListener {
+        fun onItemDistanceClick()
+        fun onItemTimeFrameClick()
+    }
 }

@@ -26,7 +26,6 @@ class TeamApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         instance = this
         api = NetworkManager.getRestApi()
 

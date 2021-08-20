@@ -1,9 +1,7 @@
 package com.example.myteamapplication.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myteamapplication.R
 import com.example.myteamapplication.ui.main.adapters.ViewPagerFragmentStateAdapter
@@ -24,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
 
         viewPager = findViewById(R.id.team_viewPager2)
-        val pagerAdapter = ViewPagerFragmentStateAdapter(this);
+        val pagerAdapter = ViewPagerFragmentStateAdapter(this)
 
         viewPager.adapter = pagerAdapter
 
@@ -38,8 +36,6 @@ class MainActivity : AppCompatActivity() {
 
             viewPager.setCurrentItem(tab.position, true)
         }.attach()
-
-        Log.d("TAG", "onCreate: ")
     }
 
 

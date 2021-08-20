@@ -26,6 +26,7 @@ open class IndicatorButton @JvmOverloads constructor(
 
     init {
 
+
         LayoutInflater.from(context).inflate(R.layout.filter_button_layout, this, true)
         icon = findViewById(R.id.icon)
         indicator = findViewById(R.id.indicator)
@@ -35,6 +36,7 @@ open class IndicatorButton @JvmOverloads constructor(
             isEnabled = it.getBoolean(R.styleable.IndicatorButton_android_enabled, isEnabled)
             icon.setImageDrawable(it.getDrawable(R.styleable.IndicatorButton_icon))
             label.text = it.getText(R.styleable.IndicatorButton_android_text)
+
         }
 
         background = ContextCompat.getDrawable(context, R.drawable.background_shape)

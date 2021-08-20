@@ -23,7 +23,7 @@ class BaseFactory(private val repository: RoomDistanceFilterRepository) :
                 MyTeamViewModel(TeamApplication.instance, repository) as T
 
             modelClass.isAssignableFrom(AllTeamsViewModel::class.java) ->
-                AllTeamsViewModel(TeamApplication.instance) as T
+                AllTeamsViewModel(TeamApplication.instance, repository) as T
 
 
             else -> throw IllegalArgumentException("Unable to construct viewmodel")

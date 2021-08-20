@@ -8,28 +8,30 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
 
 const val ARG_TIME_LIST = "list"
+const val TODAY = "Today"
+const val SEVEN_DAYS = "7 Days"
+const val MONTH = "Month"
+
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class SelectTimePeriodDialogFragment() : DialogFragment(),
+class SelectTimePeriodDialogFragment : DialogFragment(),
     View.OnClickListener {
 
 
     private lateinit var saveButton: AppCompatButton
     private lateinit var cancelButton: AppCompatButton
+    private lateinit var radioGroup: ViewGroup
     private lateinit var dayButton: RadioIndicatorButton
     private lateinit var weekButton: RadioIndicatorButton
     private lateinit var monthButton: RadioIndicatorButton
     private lateinit var timePeriodAllFilters: ArrayList<String>
-    private lateinit var radioGroup: ViewGroup
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +48,6 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner);
         return inflater.inflate(R.layout.custom_activity_dialog, container, false)
     }
 
@@ -57,12 +58,12 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
 
         for (str in splitStrings) {
             when (str) {
-                "Today" -> dayButton =
-                    createCustomLayout(view, R.drawable.calendarfirst, str, this)
-                "7 Days" -> weekButton =
-                    createCustomLayout(view, R.drawable.calendarseven, str, this)
-                "Month" -> monthButton =
-                    createCustomLayout(view, R.drawable.calendarpage, str, this)
+                TODAY -> dayButton =
+                    createCustomLayout(view, R.drawable.calendarfirst, str)
+                SEVEN_DAYS -> weekButton =
+                    createCustomLayout(view, R.drawable.calendarseven, str)
+                MONTH -> monthButton =
+                    createCustomLayout(view, R.drawable.calendarpage, str)
             }
             setupClickListeners(view)
         }
@@ -81,35 +82,35 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
             cancelButton -> dismiss()
             saveButton ->
                 when {
-                dayButton.isChecked -> {
-                    intent.putExtra("time", "Today")
-                    targetFragment?.onActivityResult(
-                        targetRequestCode,
-                        Activity.RESULT_OK,
-                        intent
-                    )
-                    dismiss()
-                }
-                weekButton.isChecked -> {
-                    intent.putExtra("time", "7 Days")
-                    targetFragment?.onActivityResult(
-                        targetRequestCode,
-                        Activity.RESULT_OK,
-                        intent
-                    )
-                    dismiss()
-                }
-                monthButton.isChecked -> {
-                    intent.putExtra("time", "Month")
-                    targetFragment?.onActivityResult(
-                        targetRequestCode,
-                        Activity.RESULT_OK,
-                        intent
-                    )
-                    dismiss()
+                    dayButton.isChecked -> {
+                        intent.putExtra("time", TODAY)
+                        targetFragment?.onActivityResult(
+                            targetRequestCode,
+                            Activity.RESULT_OK,
+                            intent
+                        )
+                        dismiss()
+                    }
+                    weekButton.isChecked -> {
+                        intent.putExtra("time", SEVEN_DAYS)
+                        targetFragment?.onActivityResult(
+                            targetRequestCode,
+                            Activity.RESULT_OK,
+                            intent
+                        )
+                        dismiss()
+                    }
+                    monthButton.isChecked -> {
+                        intent.putExtra("time", MONTH)
+                        targetFragment?.onActivityResult(
+                            targetRequestCode,
+                            Activity.RESULT_OK,
+                            intent
+                        )
+                        dismiss()
 
+                    }
                 }
-            }
         }
     }
 
@@ -131,8 +132,7 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
     private fun createCustomLayout(
         v: View,
         id: Int,
-        name: String,
-        onClickListener: View.OnClickListener
+        name: String
     ): RadioIndicatorButton {
 
         val params = LinearLayout.LayoutParams(
@@ -141,13 +141,13 @@ class SelectTimePeriodDialogFragment() : DialogFragment(),
         )
 
         params.setMargins(0, 50, 10, 0)
-        params.gravity = Gravity.CENTER_HORIZONTAL
+        params.gravity = Gravity.CENTER
         radioGroup.layoutParams = params
         val customSelectFilterView = RadioIndicatorButton(v.context)
         customSelectFilterView.setCategoryImage(id)
         customSelectFilterView.setText(name)
         radioGroup.addView(customSelectFilterView)
-        customSelectFilterView.setOnClickListener(onClickListener)
+        customSelectFilterView.setOnClickListener(this)
 
         return customSelectFilterView
     }

@@ -15,6 +15,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.myteamapplication.R
 
 const val ARG_DISTANCE_LIST = "list"
+const val STEP = "Step"
+const val KM = "Km"
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
@@ -41,9 +43,10 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner);
+        dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
         return inflater.inflate(R.layout.custom_activity_dialog, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,8 +54,8 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
         val splitStrings: ArrayList<String> = separateString(distanceAllFilters)
         for (str in splitStrings) {
             when (str) {
-                "Step" -> stepButton = createCustomLayout(view, R.drawable.sneakers, str, this)
-                "Km" -> kmButton = createCustomLayout(view, R.drawable.navigation, str, this)
+                STEP -> stepButton = createCustomLayout(view, R.drawable.sneakers, str)
+                KM -> kmButton = createCustomLayout(view, R.drawable.navigation, str)
             }
         }
         setupClickListeners(view)
@@ -77,15 +80,15 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
         when (v) {
             cancelButton -> dismiss()
             saveButton -> if (stepButton.isChecked) {
-                intent.putExtra("step", "Step")
+                intent.putExtra("step", STEP)
                 targetFragment?.onActivityResult(
                     targetRequestCode,
                     Activity.RESULT_OK,
                     intent
                 )
                 dismiss()
-            } else if (kmButton.isChecked){
-                intent.putExtra("step", "Km")
+            } else if (kmButton.isChecked) {
+                intent.putExtra("step", KM)
                 targetFragment?.onActivityResult(
                     targetRequestCode,
                     Activity.RESULT_OK,
@@ -100,21 +103,22 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
     private fun createCustomLayout(
         v: View,
         id: Int,
-        name: String,
-        onClickListener: View.OnClickListener
+        name: String
     ): RadioIndicatorButton {
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.MATCH_PARENT,
         )
         params.setMargins(0, 50, 10, 0)
-        params.gravity = Gravity.CENTER_HORIZONTAL
+        params.gravity = Gravity.CENTER
         radioGroup.layoutParams = params
+
         val customSelectFilterView = RadioIndicatorButton(v.context)
         customSelectFilterView.setCategoryImage(id)
+
         customSelectFilterView.setText(name)
         radioGroup.addView(customSelectFilterView)
-        customSelectFilterView.setOnClickListener(onClickListener)
+        customSelectFilterView.setOnClickListener(this)
 
         return customSelectFilterView
     }
@@ -124,7 +128,6 @@ class SelectDistanceDialogFragment : DialogFragment(), View.OnClickListener {
             val args = Bundle().apply {
                 putSerializable(ARG_DISTANCE_LIST, list)
             }
-
             return SelectDistanceDialogFragment().apply {
                 arguments = args
             }

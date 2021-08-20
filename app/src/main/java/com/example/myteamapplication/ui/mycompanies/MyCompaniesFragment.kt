@@ -1,76 +1,88 @@
 package com.example.myteamapplication.ui.mycompanies
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myteamapplication.R
-import com.example.myteamapplication.network.models.mycompanies.Result
-import com.example.myteamapplication.ui.customview.SelectDistanceDialogFragment
-import com.example.myteamapplication.ui.customview.SelectTimePeriodDialogFragment
-import com.example.myteamapplication.ui.main.fragment.BasicFragment
+import com.example.myteamapplication.databinding.FragmentMyCompaniesBinding
+import com.example.myteamapplication.ui.main.fragment.BaseFragment
 import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
 import com.example.myteamapplication.ui.mycompanies.adapter.RecyclerAdapterData
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
 
 
-private const val REQUEST_DISTANCE_DIALOG = 0
-private const val REQUEST_TIME_PERIOD_DIALOG = 1
-@Suppress("DEPRECATION")
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
-    MyCompaniesRecyclerAdapter.OnItemClickListener {
+const val REQUEST_DISTANCE_DIALOG = 0
+const val REQUEST_TIME_PERIOD_DIALOG = 1
 
-    override fun getViewModel(): Class<MyCompaniesViewModel> = MyCompaniesViewModel::class.java
+@Suppress("DEPRECATION")
+@SuppressLint("NotifyDataSetChanged")
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+class MyCompaniesFragment : BaseFragment<MyCompaniesViewModel, FragmentMyCompaniesBinding>(),
+    MyCompaniesRecyclerAdapter.OnItemClickListener {
 
     private var myCompaniesList: MutableList<MyCompaniesDisplayModel> = mutableListOf()
     private var distanceFilterList: ArrayList<String> = ArrayList()
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
     private var activeDistanceFilter: MutableList<String> = mutableListOf()
     private var activeTimePeriodFilter: MutableList<String> = mutableListOf()
-    private var rankCompany: MutableList<Result> = mutableListOf()
+    private var rankCompany: MutableList<MyCompaniesDisplayModel> = mutableListOf()
+    private var highLightPosition = 0
+    private var currentLastPosition = 0
+    private var currentFirstPosition = 0
+    private var animationDuration = 0L
+    private var isAnimationShowing = false
+    private var positionItem: ArrayList<Int> = ArrayList()
 
-    private lateinit var recyclerView: RecyclerView
-   private var recyclerAdapter: MyCompaniesRecyclerAdapter? = null
 
-    override fun onCreateView(
+    private var recyclerAdapter: MyCompaniesRecyclerAdapter? = MyCompaniesRecyclerAdapter(
+        RecyclerAdapterData(
+            myCompaniesList,
+            activeDistanceFilter,
+            activeTimePeriodFilter,
+            rankCompany,
+            positionItem
+        ),
+        this
+    )
+
+    override fun getFragmentBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_all_teams, container, false)
-    }
+        container: ViewGroup?
+    ) = FragmentMyCompaniesBinding.inflate(inflater, container, false)
+
+    override fun getViewModel(): Class<MyCompaniesViewModel> = MyCompaniesViewModel::class.java
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerAdapter =
-            MyCompaniesRecyclerAdapter(
-                RecyclerAdapterData(
-                    myCompaniesList,
-                    activeDistanceFilter,
-                    activeTimePeriodFilter,
-                    rankCompany
-                ),
-                this
-            )
-        recyclerView = view.findViewById(R.id.recyclerView_all_team)
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = recyclerAdapter
+        animationDuration =
+            resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        binding.recyclerViewMyCompanies.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = recyclerAdapter
+        }
 
-        viewModel.highLightCompany.observe(viewLifecycleOwner,
-            {
-                rankCompany.clear()
-                rankCompany.add(it)
-            }
-        )
+        Log.d("TAG", "onViewCreated: $viewModel myCompanies")
+
+        viewModel
+            .getHighLightItem()
+            .observe(viewLifecycleOwner,
+                {
+                    rankCompany.clear()
+                    rankCompany.add(it)
+                    updateCollapsingLayout(it)
+                }
+            )
 
         viewModel
             .getCompanies()
@@ -79,46 +91,100 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
                     myCompaniesList.clear()
                     myCompaniesList.addAll(c)
                     recyclerAdapter!!.notifyDataSetChanged()
-
                 })
 
-        viewModel
-            .getActiveDistanceFilter()
-            .observe(viewLifecycleOwner,
-                { ad ->
-                    activeDistanceFilter.clear()
-                    activeDistanceFilter.add(ad)
+        getActiveDistance(activeDistanceFilter)
 
+        getActiveTimePeriod(activeTimePeriodFilter)
+
+        getDistance(distanceFilterList)
+
+        getTimePeriod(timePeriodFiltersList)
+
+        viewModel.getHighLightPosition().observe(viewLifecycleOwner, {
+            positionItem.clear()
+            highLightPosition = it
+            positionItem.add(it)
+            if (!isOnScreen()) {
+                viewVisibleAnimator(binding.collapsingLayout)
+            } else {
+                viewGoneAnimator(binding.collapsingLayout)
+            }
+        })
+
+        binding.recyclerViewMyCompanies.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager =
+                    binding.recyclerViewMyCompanies.layoutManager as LinearLayoutManager
+
+                currentLastPosition = layoutManager.findLastVisibleItemPosition()
+                currentFirstPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (isOnScreen()) {
+                    binding.collapsingLayout.apply {
+                        viewGoneAnimator(this)
+                    }
+
+                } else {
+                    binding.collapsingLayout.apply {
+                        viewVisibleAnimator(this)
+                    }
                 }
-            )
 
-        viewModel
-            .getActiveTimePeriodFilter()
-            .observe(viewLifecycleOwner,
-                { tp ->
-                    activeTimePeriodFilter.clear()
-                    activeTimePeriodFilter.add(tp)
-                }
-            )
+            }
+        })
+    }
 
-        viewModel
-            .getDistanceFilters()
-            .observe(viewLifecycleOwner,
-                { f ->
-                    distanceFilterList.clear()
-                    distanceFilterList.addAll(f)
-                }
+    private fun isOnScreen(): Boolean =
+        highLightPosition in currentFirstPosition..currentLastPosition
 
-            )
 
-        viewModel
-            .getTimePeriodFilters()
-            .observe(viewLifecycleOwner,
-                { f ->
-                    timePeriodFiltersList.clear()
-                    timePeriodFiltersList.addAll(f)
-                }
-            )
+    private fun viewGoneAnimator(view: View) {
+        if (!isAnimationShowing) {
+            isAnimationShowing = true
+            view.animate()
+                .translationY(0F)
+                .setDuration(animationDuration)
+                .interpolator = LinearInterpolator()
+        }
+    }
+
+    private fun viewVisibleAnimator(view: View) {
+        setPadding(view)
+        if (isAnimationShowing) {
+            view.animate()
+                .translationY(view.height.toFloat())
+                .translationZ(100F)
+                .setDuration(animationDuration)
+                .interpolator = LinearInterpolator()
+            isAnimationShowing = false
+        }
+
+    }
+
+
+    private fun setPadding(view: View) {
+        if (currentFirstPosition == 0) {
+            binding.recyclerViewMyCompanies.animate().apply {
+                translationY(view.height.toFloat())
+                duration = animationDuration
+                interpolator = LinearInterpolator()
+            }
+        } else {
+            binding.recyclerViewMyCompanies.animate().apply {
+                translationY(0F)
+                duration = animationDuration
+                interpolator = LinearInterpolator()
+            }
+        }
+    }
+
+    private fun updateCollapsingLayout(company: MyCompaniesDisplayModel) {
+        binding.myCompanyId.text = company.rank.toString()
+        binding.myCompanyName.text = company.displayName
+        binding.myCompanyDistance.text = company.totalDouble.toString()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,39 +205,23 @@ class MyCompaniesFragment : BasicFragment<MyCompaniesViewModel>(),
         }
     }
 
-
     override fun onItemDistanceClick() {
-        fragmentManager?.let {
-            SelectDistanceDialogFragment.newInstance(distanceFilterList)
-                .show(
-                    it,
-                    "MyCustomFragment"
-                )
-        }
-
+        onDistanceClick(distanceFilterList, this)
     }
 
     override fun onItemTimeFrameClick() {
-        fragmentManager?.let {
-            SelectTimePeriodDialogFragment.newInstance(timePeriodFiltersList)
-                .show(
-                    it,
-                    "MyCustomFragment"
-                )
-        }
-    }
+        onTimeClick(timePeriodFiltersList, this)
 
+    }
 
     override fun onResume() {
         super.onResume()
         viewModel.updateCompanies()
-        viewModel.highLightRank()
         viewModel.updateDistanceFilters()
         viewModel.updateTimePeriodFilters()
         viewModel.updateActiveDistanceFilter()
         viewModel.updateActiveTimePeriodFilter()
     }
-
 
 }
 

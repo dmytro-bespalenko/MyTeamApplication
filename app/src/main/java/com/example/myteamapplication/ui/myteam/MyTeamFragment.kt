@@ -1,5 +1,6 @@
 package com.example.myteamapplication.ui.myteam
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
@@ -9,18 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myteamapplication.R
-import com.example.myteamapplication.ui.customview.SelectDistanceDialogFragment
-import com.example.myteamapplication.ui.customview.SelectTimePeriodDialogFragment
-import com.example.myteamapplication.ui.main.fragment.BasicFragment
+import com.example.myteamapplication.databinding.FragmentMyTeamBinding
+import com.example.myteamapplication.ui.main.fragment.BaseFragment
+import com.example.myteamapplication.ui.main.fragment.REQUEST_DISTANCE_DIALOG
+import com.example.myteamapplication.ui.main.fragment.REQUEST_TIME_PERIOD_DIALOG
 import com.example.myteamapplication.ui.myteam.adapter.MyTeamAdapterData
 import com.example.myteamapplication.ui.myteam.adapter.MyTeamRecyclerAdapter
 import com.example.myteamapplication.ui.myteam.viewmodel.MyTeamViewModel
+import java.util.*
 
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.OnItemClickListener {
+class MyTeamFragment : BaseFragment<MyTeamViewModel, FragmentMyTeamBinding>(),
+    MyTeamRecyclerAdapter.OnItemClickListener {
 
     var activeDistanceFilter: MutableList<String> = mutableListOf()
     var activeTimePeriodFilter: MutableList<String> = mutableListOf()
@@ -28,30 +30,26 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
     private var timePeriodFiltersList: ArrayList<String> = ArrayList()
 
 
-    private val REQUEST_DISTANCE_DIALOG = 0
-    private val REQUEST_TIME_PERIOD_DIALOG = 1
-
     override fun getViewModel(): Class<MyTeamViewModel> = MyTeamViewModel::class.java
 
-    var recyclerAdapter = MyTeamRecyclerAdapter(
+    private var recyclerAdapter = MyTeamRecyclerAdapter(
         MyTeamAdapterData(activeDistanceFilter, activeTimePeriodFilter), this
     )
 
-    override fun onCreateView(
+
+    override fun getFragmentBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_all_teams, container, false)
-    }
+        container: ViewGroup?
+    ) = FragmentMyTeamBinding.inflate(inflater, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView_all_team)
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = recyclerAdapter
-
+        binding.recyclerViewAllTeam.apply {
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = recyclerAdapter
+        }
 
         viewModel
             .getActiveDistanceFilter()
@@ -59,41 +57,51 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
                 { ad ->
                     activeDistanceFilter.clear()
                     activeDistanceFilter.add(ad)
-                    recyclerAdapter.notifyDataSetChanged()
+                    recyclerAdapter.notifyItemChanged(activeDistanceFilter.indexOf(ad))
                 }
             )
 
-        viewModel
-            .getActiveTimePeriodFilter()
-            .observe(viewLifecycleOwner,
-                { tp ->
-                    activeTimePeriodFilter.clear()
-                    activeTimePeriodFilter.add(tp)
-                    recyclerAdapter.notifyDataSetChanged()
-                }
-            )
 
-        viewModel
-            .getDistanceFilters()
-            .observe(viewLifecycleOwner,
-                { f ->
-                    distanceFilterList.clear()
-                    distanceFilterList.addAll(f)
-                }
+//        viewModel
+//            .getActiveTimePeriodFilter()
+//            .observe(viewLifecycleOwner,
+//                { tp ->
+//                    activeTimePeriodFilter.clear()
+//                    activeTimePeriodFilter.add(tp)
+//                    recyclerAdapter.notifyItemChanged(activeTimePeriodFilter.indexOf(tp))
+//                }
+//            )
+//
+//        viewModel
+//            .getDistanceFilters()
+//            .observe(viewLifecycleOwner,
+//                { f ->
+//                    distanceFilterList.clear()
+//                    distanceFilterList.addAll(f)
+//                }
+//
+//            )
+//
+//        viewModel
+//            .getTimePeriodFilters()
+//            .observe(viewLifecycleOwner,
+//                { f ->
+//                    timePeriodFiltersList.clear()
+//                    timePeriodFiltersList.addAll(f)
+//                }
+//            )
 
-            )
+//        getActiveDistance(activeDistanceFilter)
 
-        viewModel
-            .getTimePeriodFilters()
-            .observe(viewLifecycleOwner,
-                { f ->
-                    timePeriodFiltersList.clear()
-                    timePeriodFiltersList.addAll(f)
-                }
-            )
+        getActiveTimePeriod(activeTimePeriodFilter)
+
+        getDistance(distanceFilterList)
+
+        getTimePeriod(timePeriodFiltersList)
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -114,26 +122,11 @@ class MyTeamFragment : BasicFragment<MyTeamViewModel>(), MyTeamRecyclerAdapter.O
 
 
     override fun onItemDistanceClick() {
-        fragmentManager?.let {
-            SelectDistanceDialogFragment.newInstance(distanceFilterList)
-                .show(
-                    it,
-                    "MyCustomFragment"
-                )
-        }
-
+        onDistanceClick(distanceFilterList, this)
     }
 
     override fun onItemTimeFrameClick() {
-        fragmentManager?.let {
-            SelectTimePeriodDialogFragment.newInstance(
-                timePeriodFiltersList
-            )
-                .show(
-                    it,
-                    "MyCustomFragment"
-                )
-        }
+        onTimeClick(timePeriodFiltersList, this)
     }
 
     override fun onResume() {

@@ -2,12 +2,4 @@
     <string name="app_name">MyTeamApplication</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="steps">Steps</string>
-    <string name="time_period">TimePeriod</string>
-    <string name="cancel">Cancel</string>
-    <string name="save">Save</string>
-    <string name="choose_which_activity_you_would_like_to_complete">Choose which activity you would like to complete</string>
-    <string name="no_activity">no activity</string>
-    <string name="choose_time_frame_for_you_leaderboard">Choose time frame for you leaderboard</string>
-
 </resources>

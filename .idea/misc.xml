@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="app/src/main/res/drawable/background_shape.xml" value="0.36615384615384616" />
-        <entry key="app/src/main/res/drawable/button_beat.xml" value="0.36615384615384616" />
-        <entry key="app/src/main/res/drawable/selector_row.xml" value="0.36615384615384616" />
-        <entry key="app/src/main/res/layout-v23/fragment_my_companies.xml" value="0.3188405797101449" />
-        <entry key="app/src/main/res/layout-v23/my_companies_card.xml" value="0.6500691562932227" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.35572916666666665" />
-        <entry key="app/src/main/res/layout/adapter_filter.xml" value="0.35572916666666665" />
-        <entry key="app/src/main/res/layout/collapsing_cons_layout.xml" value="0.3188405797101449" />
-        <entry key="app/src/main/res/layout/container_collaps.xml" value="0.3188405797101449" />
-        <entry key="app/src/main/res/layout/custom_activity_dialog.xml" value="0.2545289855072464" />
-        <entry key="app/src/main/res/layout/custom_filter.xml" value="0.2545289855072464" />
-        <entry key="app/src/main/res/layout/custom_select_item.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/custom_time_frame_dialog.xml" value="0.2798913043478261" />
-        <entry key="app/src/main/res/layout/filter_button_layout.xml" value="0.17299898682877407" />
-        <entry key="app/src/main/res/layout/fragment_all_teams.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_basic.xml" value="0.2798913043478261" />
-        <entry key="app/src/main/res/layout/fragment_collapsing.xml" value="0.3188405797101449" />
-        <entry key="app/src/main/res/layout/fragment_my_companies.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_my_company.xml" value="0.2509057971014493" />
-        <entry key="app/src/main/res/layout/fragment_my_teams.xml" value="0.223731884057971" />
-        <entry key="app/src/main/res/layout/my_companies_card.xml" value="0.4956736711990111" />
-      </map>
-    </option>
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

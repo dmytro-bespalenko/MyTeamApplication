@@ -13,12 +13,14 @@ import android.view.animation.LinearInterpolator
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myteamapplication.R
 import com.example.myteamapplication.databinding.FragmentMyCompaniesBinding
 import com.example.myteamapplication.ui.main.fragment.BaseFragment
 import com.example.myteamapplication.ui.mycompanies.adapter.MyCompaniesRecyclerAdapter
 import com.example.myteamapplication.ui.mycompanies.adapter.RecyclerAdapterData
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
 import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesViewModel
+import com.squareup.picasso.Picasso
 
 
 const val REQUEST_DISTANCE_DIALOG = 0
@@ -184,7 +186,14 @@ class MyCompaniesFragment : BaseFragment<MyCompaniesViewModel, FragmentMyCompani
         binding.myCompanyId.text = company.rank.toString()
         binding.myCompanyName.text = company.displayName
         binding.myCompanyDistance.text = company.totalDouble.toString()
+        setImage(company)
+    }
 
+    private fun setImage(company: MyCompaniesDisplayModel) {
+        Picasso.get()
+            .load(company.avatar)
+            .placeholder(R.drawable.ic_baseline_account_box_24)
+            .into(binding.myCompanyNameAvatar)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

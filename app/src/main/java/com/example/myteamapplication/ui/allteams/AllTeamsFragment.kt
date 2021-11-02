@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,8 @@ import java.util.*
 @SuppressLint("NotifyDataSetChanged")
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 
-class AllTeamsFragment : BaseFragment<AllTeamsViewModel, FragmentAllTeamsBinding>(),
+class AllTeamsFragment
+    : BaseFragment<AllTeamsViewModel, FragmentAllTeamsBinding>(),
     AllTeamRecyclerAdapter.OnItemClickListener {
 
     override fun getViewModel(): Class<AllTeamsViewModel> = AllTeamsViewModel::class.java
@@ -55,6 +55,16 @@ class AllTeamsFragment : BaseFragment<AllTeamsViewModel, FragmentAllTeamsBinding
         container: ViewGroup?
     ) = FragmentAllTeamsBinding.inflate(inflater, container, false)
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentAllTeamsBinding.inflate(layoutInflater)
+        return binding.root
+
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,7 +72,7 @@ class AllTeamsFragment : BaseFragment<AllTeamsViewModel, FragmentAllTeamsBinding
         animationDuration =
             resources.getInteger(android.R.integer.config_longAnimTime).toLong()
 
-        Log.d("TAG", "onViewCreated: $viewModel allTeams")
+//        Log.d("TAG", "onViewCreated: $viewModel allTeams")
 
         recyclerAdapter =
             AllTeamRecyclerAdapter(

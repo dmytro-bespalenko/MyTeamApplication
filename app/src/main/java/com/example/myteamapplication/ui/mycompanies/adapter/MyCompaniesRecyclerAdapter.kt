@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myteamapplication.R
 import com.example.myteamapplication.databinding.AdapterFilterBinding
 import com.example.myteamapplication.databinding.MyCompaniesCardBinding
+import com.example.myteamapplication.ui.mycompanies.veiwmodel.MyCompaniesDisplayModel
+import com.squareup.picasso.Picasso
 
 private var TYPE_ITEM_FIRST = 0
 private var TYPE_ITEM_OTHER = 1
@@ -49,9 +51,12 @@ data class MyCompaniesRecyclerAdapter(
         } else {
             val mutableHolder: ViewHolder = holder as ViewHolder
 
+            mutableHolder.bindGalleryItem(recyclerAdapterData.myCompaniesDisplayModel[position - 1])
+
             if (recyclerAdapterData.positionItem.isNotEmpty() && recyclerAdapterData.positionItem[0] == position
             ) {
                 mutableHolder.binding.companyLayout.setBackgroundResource(R.color.Aquamarine)
+
             } else {
                 mutableHolder.binding.companyLayout.setBackgroundColor(Color.WHITE);
             }
@@ -62,6 +67,7 @@ data class MyCompaniesRecyclerAdapter(
                 recyclerAdapterData.myCompaniesDisplayModel[position].displayName
             mutableHolder.binding.myCompanyDistance.text =
                 recyclerAdapterData.myCompaniesDisplayModel[position].totalDouble.toString()
+
 
         }
 
@@ -92,12 +98,26 @@ data class MyCompaniesRecyclerAdapter(
     }
 
     inner class ViewHolder(val binding: MyCompaniesCardBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bindGalleryItem(galleryItem: MyCompaniesDisplayModel) {
+
+            Picasso.get()
+                .load(galleryItem.avatar)
+                .placeholder(R.drawable.ic_baseline_account_box_24)
+                .into(binding.myCompanyNameAvatar)
+        }
+
+
+    }
+
 
     interface OnItemClickListener {
         fun onItemDistanceClick()
         fun onItemTimeFrameClick()
     }
+
+
 }
 
 

@@ -9,5 +9,8 @@
     <string name="choose_which_activity_you_would_like_to_complete">Choose which activity you would like to complete</string>
     <string name="no_activity">no activity</string>
     <string name="choose_time_frame_for_you_leaderboard">Choose time frame for you leaderboard</string>
+    <string name="my_team">MY TEAM</string>
+    <string name="all_teams">ALL TEAMS</string>
+    <string name="my_company">MY COMPANY</string>
 
 </resources>

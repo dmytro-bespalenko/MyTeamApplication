@@ -9,10 +9,11 @@ import com.example.myteamapplication.room.repositories.RoomDistanceFilterReposit
 import com.example.myteamapplication.ui.main.viewmodel.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @SuppressLint("CheckResult")
 
-class AllTeamsViewModel(
+class AllTeamsViewModel @Inject constructor(
     instance: TeamApplication,
     distanceFilterRepository: RoomDistanceFilterRepository
 ) : BaseViewModel(instance, distanceFilterRepository) {

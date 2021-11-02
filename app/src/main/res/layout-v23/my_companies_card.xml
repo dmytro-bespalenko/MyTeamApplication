@@ -29,7 +29,6 @@
             app:layout_constraintHorizontal_bias="0.119"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_account_box_24"
             tools:srcCompat="@tools:sample/avatars"
             android:contentDescription="TODO" />
 

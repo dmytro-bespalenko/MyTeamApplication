@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
@@ -29,9 +31,9 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "MY TEAM"
-                1 -> tab.text = "ALL TEAMS"
-                2 -> tab.text = "MY COMPANY"
+                0 -> tab.text = getString(R.string.my_team)
+                1 -> tab.text = getString(R.string.all_teams)
+                2 -> tab.text = getString(R.string.my_company)
             }
 
             viewPager.setCurrentItem(tab.position, true)

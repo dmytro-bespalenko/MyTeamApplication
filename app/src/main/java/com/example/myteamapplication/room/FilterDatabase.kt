@@ -15,8 +15,6 @@ abstract class FilterDatabase : RoomDatabase() {
 
     abstract val filterDao: DistanceDao
 
-
-
     companion object {
 
         private var INSTANCE: FilterDatabase? = null

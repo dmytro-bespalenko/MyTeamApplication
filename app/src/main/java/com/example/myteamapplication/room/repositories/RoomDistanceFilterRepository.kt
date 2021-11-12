@@ -35,8 +35,8 @@ class RoomDistanceFilterRepository(application: Application) : DistanceFilterRep
                         1,
                         "Step",
                         "Today",
-                        mutableListOf("Today", "7 Days", "Month"),
-                        mutableListOf("Step", "Km")
+                        listOf("Today", "7 Days", "Month"),
+                        listOf("Step", "Km")
                     )
                 )
             }
